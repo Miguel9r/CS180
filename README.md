@@ -4,6 +4,6 @@ This is our Software Engineering Project for CS 180 at UCR.
 
 ## Members
 
-Ivan
-Jesus
-Miguel
+Ivan\n
+Jesus\n
+Miguel\n
