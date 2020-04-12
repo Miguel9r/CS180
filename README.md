@@ -18,6 +18,15 @@ yarn dev
 
 The server is listening on Port 5000 and the client is running on Port 3000.  Once you run the above yarn command, you can go to [http://localhost:3000/](http://localhost:3000/) to check out the web app.
 
+# Agile development
+
+This project's development process will follow Scrum's development guidelines and techniques.
+To keep an interactive task board accessible by all members of the team we are using Azure DevOps.
+
+As well, we will keep a screenshot of the task board for each sprint finish in the folders Task Boards.
+
+Task Board after sprint one:
+
 ## Members
 
 Ivan Fernandez Navarro
