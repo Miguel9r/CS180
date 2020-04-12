@@ -1,17 +1,25 @@
 # CS180
 
-This is our Software Engineering Project for CS 180 at UCR.  First off, you want to ensure that you have 'yarn' installed.  Then you will run the command
+This is our Software Engineering Project for CS 180 at UCR.  First off, you want to ensure that you have [yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable) installed.  
+
+After cloning the repo you should run the following commands:
 
 ```bash
-npx create-react-app example-create-react-app-express
+cd ./cs180-app/
+npm i nodemon -g
+yarn
 ```
 
+To run the entire application simply run:
 
+```bash
+yarn dev
+```
 
 ## Members
 
-Ivan
+Ivan Fernandez Navarro
 
-Jesus
+Jesus Salas
 
-Miguel
+Miguel Rojas
