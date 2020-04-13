@@ -28,7 +28,7 @@ To keep an interactive task board accessible by all members of the team we are u
 As well, we will keep a screenshot of the task board for each sprint finish in the folders Task Boards.
 
 Task Board after Sprint-1:
-![alt text](https://github.com/Miguel9r/CS180/blob/master/Task%20boards/Task_board_Sprint_1.png "Sprint-1")
+![alt text](https://github.com/Miguel9r/CS180/blob/master/docs/Task_board_Sprint_1.png "Spring-1")
 
 ## Members
 
