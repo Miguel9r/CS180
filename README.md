@@ -8,9 +8,11 @@ After cloning the repo you should run the following commands:
 cd ./cs180-app/
 npm i nodemon -g
 yarn
+cd ./client/
+npm install
 ```
 
-To run the entire application simply run:
+If you run into an error message try deleting the node_modules folder inside of the client folder and re-running the npm install command. To run the entire application simply run:
 
 ```bash
 yarn dev
