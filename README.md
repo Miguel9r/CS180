@@ -1,18 +1,20 @@
 # CS180 Project
 
-This is our Software Engineering Project for CS 180 at UCR.  First off, you want to ensure that you have [yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable) installed.  
+This is our Software Engineering Project for CS 180 at UCR.  The database we will be using can be found at [THIS](https://www.kaggle.com/ravi72munde/uber-lyft-cab-prices) link.
+
+First off, you want to ensure that you have [yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable) installed.  
 
 After cloning the repo you should run the following commands:
 
 ```bash
-cd ./cs180-app/
+cd ./src/
 npm i nodemon -g
 yarn
 cd ./client/
 npm install
 ```
 
-If you run into an error message try deleting the node_modules folder inside of the client folder and re-running the npm install command. To run the entire application simply run:
+If you run into an error message try deleting the node_modules folder inside of the client folder and re-running the npm install command. To run the entire application simply run (while being in the ./src/ directory):
 
 ```bash
 yarn dev
