@@ -19,11 +19,11 @@
 		    "result1": {
 			    "Distance": "0.44",
 			    "Company": "Lyft",
-			    "Timestamp": 1544952607890,
+			    "Timestamp": "1544952607890",
 			    "Destination": "North Station",
 			    "Source": "Haymarket Square",
-			    "Price": 5,
-			    "SurgeMultiplier": 1,
+			    "Price": "5",
+			    "SurgeMultiplier": "1",
 			    "CabType": "Shared"
 		    },
 		    
