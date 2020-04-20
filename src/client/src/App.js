@@ -194,6 +194,7 @@ render() {
         <th>Price</th>
         <th>Surge Multiplier</th>
         <th>Cab Type</th>
+        <th></th>
                <tbody>
                   {this.renderTableData()}
                </tbody>
