@@ -121,7 +121,7 @@ class App extends Component {
         SurgeMultiplier,
         CabType } = student //destructuring
        return (
-          <tr key={Timestamp}>
+          <tr key={index}>
              <td>{Distance}</td>
              <td>{Company}</td>
              <td>{Timestamp}</td>
@@ -179,7 +179,7 @@ render() {
             onChange={e => this.setCabType(e)}
           />
         <br/>
-        <button onclick={e => this.setState({ post: e.target.value })} type="submit" class="block">Search</button>
+        <button onclick={e => this.setState({ post: e.target.value, responseToPost: [] })} type="submit" class="block">Search</button>
         </form>
 
         </header>
