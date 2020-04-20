@@ -122,14 +122,15 @@ class App extends Component {
         CabType } = student //destructuring
        return (
           <tr key={index}>
-             <td>{Distance} miles</td>
-             <td>{Company}</td>
-             <td>{new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(Timestamp)}</td>
-             <td>{Destination}</td>
-             <td>{Source}</td>
-             <td>${Price}</td>
-             <td>{SurgeMultiplier}</td>
-             <td>{CabType}</td>
+             <td><button>Edit</button>{Distance} miles</td>
+             <td><button>Edit</button>{Company}</td>
+             <td><button>Edit</button>{new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(Timestamp)}</td>
+             <td><button>Edit</button>{Destination}</td>
+             <td><button>Edit</button>{Source}</td>
+             <td><button>Edit</button>${Price}</td>
+             <td><button>Edit</button>{SurgeMultiplier}</td>
+             <td><button>Edit</button>{CabType}</td>
+             <td><a>Delete</a></td>
           </tr>
        )
     })
@@ -192,6 +193,7 @@ render() {
         <th>Price</th>
         <th>Surge Multiplier</th>
         <th>Cab Type</th>
+        <th></th>
                <tbody>
                   {this.renderTableData()}
                </tbody>
