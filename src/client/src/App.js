@@ -122,12 +122,12 @@ class App extends Component {
         CabType } = student //destructuring
        return (
           <tr key={index}>
-             <td>{Distance}</td>
+             <td>{Distance} miles</td>
              <td>{Company}</td>
-             <td>{Timestamp}</td>
+             <td>{new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(Timestamp)}</td>
              <td>{Destination}</td>
              <td>{Source}</td>
-             <td>{Price}</td>
+             <td>${Price}</td>
              <td>{SurgeMultiplier}</td>
              <td>{CabType}</td>
           </tr>
@@ -186,7 +186,7 @@ render() {
         <table id='results'>
         <th>Distance</th>
         <th>Company</th>
-        <th>Timestamp</th>
+        <th>Date</th>
         <th>Destination</th>
         <th>Source</th>
         <th>Price</th>
