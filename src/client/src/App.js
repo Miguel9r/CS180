@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -22,64 +22,64 @@ class App extends Component {
     const val = e.target.value==""?null:e.target.value;
     this.setState(prev => {
       let query = { ...prev.query };  // creating copy of state variable jasper
-      query.Distance = val;                     // update the name property, assign a new value                 
-      return { query }; 
+      query.Distance = val;                     // update the name property, assign a new value
+      return { query };
       })
   }
   setCompany(e){
     const val = e.target.value==""?null:e.target.value;
     this.setState(prev => {
       let query = { ...prev.query };  // creating copy of state variable jasper
-      query.Company = val;                     // update the name property, assign a new value                 
-      return { query }; 
+      query.Company = val;                     // update the name property, assign a new value
+      return { query };
       })
   }
   setTimestamp(e){
     const val = e.target.value==""?null:e.target.value;
     this.setState(prev => {
       let query = { ...prev.query };  // creating copy of state variable jasper
-      query.Timestamp = val;                     // update the name property, assign a new value                 
-      return { query }; 
+      query.Timestamp = val;                     // update the name property, assign a new value
+      return { query };
       })
   }
   setDestination(e){
     const val = e.target.value==""?null:e.target.value;
     this.setState(prev => {
       let query = { ...prev.query };  // creating copy of state variable jasper
-      query.Destination = val;                     // update the name property, assign a new value                 
-      return { query }; 
+      query.Destination = val;                     // update the name property, assign a new value
+      return { query };
       })
   }
   setSource(e){
     const val = e.target.value==""?null:e.target.value;
     this.setState(prev => {
       let query = { ...prev.query };  // creating copy of state variable jasper
-      query.Source = val;                     // update the name property, assign a new value                 
-      return { query }; 
+      query.Source = val;                     // update the name property, assign a new value
+      return { query };
       })
   }
   setPrice(e){
     const val = e.target.value==""?null:e.target.value;
     this.setState(prev => {
       let query = { ...prev.query };  // creating copy of state variable jasper
-      query.Price = val;                     // update the name property, assign a new value                 
-      return { query }; 
+      query.Price = val;                     // update the name property, assign a new value
+      return { query };
       })
   }
   setSurgeMultiplier(e){
     const val = e.target.value==""?null:e.target.value;
     this.setState(prev => {
       let query = { ...prev.query };  // creating copy of state variable jasper
-      query.SurgeMultiplier = val;                     // update the name property, assign a new value                 
-      return { query }; 
+      query.SurgeMultiplier = val;                     // update the name property, assign a new value
+      return { query };
       })
   }
   setCabType(e){
     const val = e.target.value==""?null:e.target.value;
     this.setState(prev => {
       let query = { ...prev.query };  // creating copy of state variable jasper
-      query.CabType = val;                     // update the name property, assign a new value                 
-      return { query }; 
+      query.CabType = val;                     // update the name property, assign a new value
+      return { query };
       })
   }
 
@@ -138,77 +138,60 @@ render() {
     return (
       <div className="App">
         <header className="App-header">
-          <p>
-            <strong>Post to Server:</strong>
-          </p>
-          <p>{this.state.response}</p>
-          <form onSubmit={this.handleSubmit}>
-          <label>
-            Distance:
-            <input type="text" name="Distance" 
-              onChange={e => this.setDistance(e)}
-            />
-          </label>
-          <br/>
-          <label>
-            Company:
-            <input type="text" name="Company" 
-              onChange={e => this.setCompany(e)}
-            />
-          </label>
-          <br/>
-          <label>
-            Timestamp:
-            <input type="text" name="Timestamp" 
-              onChange={e => this.setTimestamp(e)}
-            />
-          </label>      
-          <br/>    
-          <label>
-            Destination:
-            <input type="text" name="Destination" 
-              onChange={e => this.setDestination(e)}
-            />
-          </label>
-          <br/>
-          <label>
-            Source:
-            <input type="text" name="Source" 
-              onChange={e => this.setSource(e)}
-            />
-          </label>
-          <br/>
-          <label>
-            Price:
-            <input type="text" name="Price" 
-              onChange={e => this.setPrice(e)}
-            />
-          </label>
-          <br/>
-          <label>
-            Surge multiplier:
-            <input type="text" name="SurgeMultiplier" 
-              onChange={e => this.setSurgeMultiplier(e)}
-            />
-          </label>
-          <br/>
-          <label>
-            Cab type:
-            <input type="text" name="CabType" 
-              onChange={e => this.setCabType(e)}
-            />
-          </label>
-          <br/>
-            <input
-              type="text"
-              value={this.state.post}
-              onChange={e => this.setState({ post: e.target.value })}
-            />
-            <button type="submit">Submit</button>
-          </form>
-          
+        <p>
+          <strong>Uber/Lyft Cab Pickup Helper</strong>
+        </p>
+        </header>
+        <header className="Search-header">
+        <p>{this.state.response}</p>
+        <form onSubmit={this.handleSubmit}>
+          <label>Distance: </label>
+          <input type="text" name="Distance" id="Distance"
+            onChange={e => this.setDistance(e)}
+          />
+          <label>Company: </label>
+          <input type="text" name="Company" id="Company"
+            onChange={e => this.setCompany(e)}
+          />
+          <label>Timestamp: </label>
+          <input type="text" name="Timestamp" id="Timestamp"
+            onChange={e => this.setTimestamp(e)}
+          />
+          <label>Destination: </label>
+          <input type="text" name="Destination" id="Destination"
+            onChange={e => this.setDestination(e)}
+          />
+        <br/>
+          <label>Source: </label>
+          <input type="text" name="Source" id="Source"
+            onChange={e => this.setSource(e)}
+          />
+          <label>Price: </label>
+          <input type="text" name="Price" id="Price"
+            onChange={e => this.setPrice(e)}
+          />
+          <label>Surge Multiplier: </label>
+          <input type="text" name="SurgeMultiplier" id="SurgeMultiplier"
+            onChange={e => this.setSurgeMultiplier(e)}
+          />
+          <label>Cab Type: </label>
+          <input type="text" name="CabType" id="CabType"
+            onChange={e => this.setCabType(e)}
+          />
+        <br/>
+        <button onclick={e => this.setState({ post: e.target.value })} type="submit" class="block">Search</button>
+        </form>
+
         </header>
         <table id='results'>
+        <th>Distance</th>
+        <th>Company</th>
+        <th>Timestamp</th>
+        <th>Destination</th>
+        <th>Source</th>
+        <th>Price</th>
+        <th>Surge Multiplier</th>
+        <th>Cab Type</th>
                <tbody>
                   {this.renderTableData()}
                </tbody>
