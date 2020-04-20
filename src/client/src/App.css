@@ -27,7 +27,7 @@
   padding-bottom: 30px;
 }
 
-.block {
+.block-1 {
   margin-top: 50px;
   display: block;
   width: 100%;
@@ -40,32 +40,25 @@
   text-align: center;
 }
 
-#Distance {
-  margin-right: 100px;
+.block-2 {
+  margin-top: 50px;
+  display: block;
+  width: 100%;
+  border: double;
+  background-color: #247d3c;
+  font-size: 28px;
+  padding: 10px 10px;
+  color: white;
+  cursor: pointer;
+  text-align: center;
 }
 
-#Company {
-  margin-right: 100px;
+#delete {
+  color: blue;
 }
 
-#Timestamp {
-  margin-right: 100px;
-}
-
-#Source {
-  margin-right: 180px;
-}
-
-#Price {
-  margin-right: 100px;
-}
-
-#SurgeMultiplier {
-  margin-right: 100px;
-}
-
-#CabType {
-  margin-right: 100px;
+#Distance, #Company, #Timestamp, #Source, #Price, #SurgeMultiplier {
+  margin-right: 50px;
 }
 
 #results {
@@ -91,7 +84,4 @@
   text-align: center;
   background-color: #8a8a8a;
   color: black;
-}
-a{
-  color: blue;
 }

@@ -122,15 +122,15 @@ class App extends Component {
         CabType } = student //destructuring
        return (
           <tr key={index}>
-             <td><button>Edit</button>{Distance} miles</td>
-             <td><button>Edit</button>{Company}</td>
-             <td><button>Edit</button>{new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(Timestamp)}</td>
-             <td><button>Edit</button>{Destination}</td>
-             <td><button>Edit</button>{Source}</td>
-             <td><button>Edit</button>${Price}</td>
-             <td><button>Edit</button>{SurgeMultiplier}</td>
-             <td><button>Edit</button>{CabType}</td>
-             <td><a>Delete</a></td>
+             <td>{Distance}</td>
+             <td>{Company}</td>
+             <td>{Timestamp}</td>
+             <td>{Destination}</td>
+             <td>{Source}</td>
+             <td>{Price}</td>
+             <td>{SurgeMultiplier}</td>
+             <td>{CabType}</td>
+             <td id="delete"><a href="">Delete</a></td>
           </tr>
        )
     })
@@ -180,20 +180,20 @@ render() {
             onChange={e => this.setCabType(e)}
           />
         <br/>
-        <button onclick={e => this.setState({ post: e.target.value, responseToPost: [] })} type="submit" class="block">Search</button>
+        <button onclick={e => this.setState({ post: e.target.value, responseToPost: [] })} type="submit" class="block-1">Search</button>
+        <button onclick={e => this.setState({ post: e.target.value, responseToPost: [] })} type="submit" class="block-2">Insert</button>
         </form>
 
         </header>
         <table id='results'>
         <th>Distance</th>
         <th>Company</th>
-        <th>Date</th>
+        <th>Timestamp</th>
         <th>Destination</th>
         <th>Source</th>
         <th>Price</th>
         <th>Surge Multiplier</th>
         <th>Cab Type</th>
-        <th></th>
                <tbody>
                   {this.renderTableData()}
                </tbody>
