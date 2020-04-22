@@ -110,8 +110,20 @@ class App extends Component {
 
     this.setState({ responseToPost: JSON.parse(body) });
   };
+
+  deleteRow = async row => {
+    console.log("Heyy");
+    const response = await fetch('/api/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({delete: row.Id}),
+    });
+    const body = await response.text();
+  };
   renderTableData() {
-    return this.state.responseToPost.map((student, index) => {
+    return this.state.responseToPost.map((ride, index) => {
        const { Distance,
         Company,
         Timestamp,
@@ -119,9 +131,11 @@ class App extends Component {
         Source,
         Price,
         SurgeMultiplier,
-        CabType } = student //destructuring
+        CabType, 
+        Id } = ride //destructuring
+        const i = ride.Id;
        return (
-          <tr key={index}>
+          <tr key={Id}>
              <td>{Distance}</td>
              <td>{Company}</td>
              <td>{Timestamp}</td>
@@ -130,11 +144,12 @@ class App extends Component {
              <td>{Price}</td>
              <td>{SurgeMultiplier}</td>
              <td>{CabType}</td>
-             <td id="delete"><a href="">Delete</a></td>
+             <td id="delete"><button onClick={() => this.deleteRow({Id})}>Delete</button></td>
           </tr>
        )
     })
  }
+
 render() {
     return (
       <div className="App">
@@ -181,7 +196,7 @@ render() {
           />
         <br/>
         <button onclick={e => this.setState({ post: e.target.value, responseToPost: [] })} type="submit" class="block-1">Search</button>
-        <button onclick={e => this.setState({ post: e.target.value, responseToPost: [] })} type="submit" class="block-2">Insert</button>
+        <button onclick={e => this.setState({ post: e.target.value })} type="submit" class="block-2">Insert</button>
         </form>
 
         </header>
