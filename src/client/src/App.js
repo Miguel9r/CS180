@@ -121,6 +121,8 @@ class App extends Component {
       body: JSON.stringify({delete: row.Id}),
     });
     const body = await response.text();
+
+    this.setState({ responseToPost: JSON.parse(body) });
   };
   renderTableData() {
     return this.state.responseToPost.map((ride, index) => {

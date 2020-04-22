@@ -26,6 +26,7 @@ const readInterface = readline.createInterface({
 // 8 -> ID
 var rows = [];
 var id = 0;
+var last_query;
 
 readInterface.on('line', function(line) {
   var row = line.split(',');
@@ -45,6 +46,7 @@ app.get('/api/hello', (req, res) => {
 
 app.post('/api/query', (req, res) => {
   console.log(req.body);
+  last_query = req.body;
   res.send(
     search(req.body),
   );
@@ -52,8 +54,9 @@ app.post('/api/query', (req, res) => {
 
 app.post('/api/delete', (req, res) => {
   console.log(req.body);
+  deleteRow(req.body)
   res.send(
-    deleteRow(req.body),
+    search(last_query),
   );
 });
 
