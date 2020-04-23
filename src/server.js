@@ -28,6 +28,9 @@ var rows = [];
 var id = 0;
 var last_query;
 
+/*
+* Read the db.csv file
+*/
 readInterface.on('line', function(line) {
   var row = line.split(',');
   rows.push(row);
@@ -62,6 +65,10 @@ app.post('/api/delete', (req, res) => {
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
+/*
+* Delete the row selected from the local database (local array of rows)
+* Then overwrite the db.csv file with the new local database
+*/
 function deleteRow(row) {
   var i;
   for(i = 0; i<rows.length; i++)
@@ -75,6 +82,10 @@ function deleteRow(row) {
   writeBlank();
 }
 
+/*
+* Search for the rows that match the criteria from the local database (local array of rows)
+* Return an array of those rows as objects
+*/
 function search(criteria) {
   var query = criteria;
   results = [];
@@ -123,6 +134,9 @@ function search(criteria) {
   //console.log(returnArr);
   return returnArr;
 }
+/*
+* Convert db.csv into a blank file the write the new infor to the file
+*/
 function writeBlank(){
   fs.open(dbPath, 'w', function (err, file) {
   if (err) throw err;
@@ -130,6 +144,9 @@ function writeBlank(){
 }); 
   fs.writeFile(dbPath, '', function(){console.log('done');writeBack();})
 }
+/*
+* Save the local database to the db.csv file
+*/
 function writeBack(){
   var stream = fs.createWriteStream(dbPath, {flags:'a'});
   for(row in rows)
