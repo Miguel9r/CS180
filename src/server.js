@@ -37,6 +37,7 @@ readInterface.on('line', function(line) {
 }).on('close', function(line){
   console.log("File completely read");
   id = rows.length;
+  console.log("Total of rows: " + id);
 });
 
 
@@ -63,6 +64,14 @@ app.post('/api/delete', (req, res) => {
   );
 });
 
+app.post('/api/insert', (req, res) => { // used for calling the addRow function
+  console.log(req.body);
+  addRow(req.body)
+  res.send(
+    search(last_query),
+  );
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 /*
@@ -83,6 +92,25 @@ function deleteRow(row) {
 }
 
 /*
+* Insert the info that was added into the fields to the database
+* STILL NEEDS A LOT OF WORK DONE
+*/
+
+function addRow(info) {
+  var total_rows = rows.length + 1; // increasing the total rows, and the ID
+  results = [];
+
+  for (var i = 0; i < 8; i++) {
+    results.push(info);
+  }
+
+  console.log(results.length + " results");
+  console.log("Inserted the following information: " + info);
+  //var returnArr = JSON.stringify(rows);
+  //return returnArr;
+}
+
+/*
 * Search for the rows that match the criteria from the local database (local array of rows)
 * Return an array of those rows as objects
 */
@@ -96,11 +124,6 @@ function search(criteria) {
     var j = 0;
     for(x in query)
     {
-      if(show)
-      {
-        console.log(rows[i][j]);
-        show = false;
-      }
       if(query[x] != null && !(rows[i][j] === query[x]))
       {
         add = false;
@@ -117,7 +140,7 @@ function search(criteria) {
         "Source": "Haymarket Square",
         "Price": 5,
         "SurgeMultiplier": 1,
-        "CabType": "Shared", 
+        "CabType": "Shared",
         "Id": "3"
       };
       j= 0;
@@ -135,13 +158,13 @@ function search(criteria) {
   return returnArr;
 }
 /*
-* Convert db.csv into a blank file the write the new infor to the file
+* Convert db.csv into a blank file then write the new info to the file
 */
 function writeBlank(){
   fs.open(dbPath, 'w', function (err, file) {
   if (err) throw err;
   console.log('File is opened in write mode.');
-}); 
+});
   fs.writeFile(dbPath, '', function(){console.log('done');writeBack();})
 }
 /*
@@ -161,5 +184,3 @@ function writeBack(){
     stream.write(string);
   }
 }
-
-
