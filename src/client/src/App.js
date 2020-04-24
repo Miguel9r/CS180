@@ -23,6 +23,10 @@ class App extends Component {
       CabType: null
     },
     open: false,
+    openEdit: false,
+    editField: null,
+    editRow: null,
+    editValue: null,
     startDate: null
   };
   setDistance(e){
@@ -107,6 +111,9 @@ class App extends Component {
   closeModal = async e => {
     this.setState({ open: false });
   }
+  closeEditModal = async e => {
+    this.setState({ openEdit: false });
+  }
 
   handleSubmit = async e => {
     e.preventDefault();
@@ -171,6 +178,23 @@ class App extends Component {
 
     this.setState({ responseToPost: JSON.parse(body) });
   };
+  setTheState = async (row, fieldVal) => {
+    this.setState({editField: fieldVal, editRow: row, openEdit: true});
+  }
+
+  updateRow = async e => {
+    e.preventDefault();
+    const response = await fetch('/api/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({update: this.state.editRow, field: this.state.editField, value: this.state.editValue}),
+    });
+    const body = await response.text();
+
+    this.setState({ responseToPost: JSON.parse(body) });
+  };
   renderTableData() {
     return this.state.responseToPost.map((ride, index) => {
        const { Distance,
@@ -186,14 +210,14 @@ class App extends Component {
         const date = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(Timestamp);
        return (
           <tr key={Id}>
-             <td>{Distance}</td>
-             <td>{Company}</td>
-             <td>{date}</td>
-             <td>{Destination}</td>
-             <td>{Source}</td>
-             <td>{Price}</td>
-             <td>{SurgeMultiplier}</td>
-             <td>{CabType}</td>
+             <td><button onClick={() => this.setTheState({Id}, "Distance")}>Edit</button>{Distance}</td>
+             <td><button onClick={() => this.setTheState({Id}, "Company")}>Edit</button>{Company}</td>
+             <td><button onClick={() => this.setTheState({Id}, "Timestamp")}>Edit</button>{date}</td>
+             <td><button onClick={() => this.setTheState({Id}, "Destination")}>Edit</button>{Destination}</td>
+             <td><button onClick={() => this.setTheState({Id}, "Source")}>Edit</button>{Source}</td>
+             <td><button onClick={() => this.setTheState({Id}, "Price")}>Edit</button>{Price}</td>
+             <td><button onClick={() => this.setTheState({Id}, "SurgeMultiplier")}>Edit</button>{SurgeMultiplier}</td>
+             <td><button onClick={() => this.setTheState({Id}, "CabType")}>Edit</button>{CabType}</td>
              <td id="delete"><button onClick={() => this.deleteRow({Id})}>Delete</button></td>
           </tr>
        )
@@ -260,6 +284,30 @@ render() {
         </form>
 
         </header>
+        <Popup
+          open={this.state.openEdit}
+          closeOnDocumentClick
+          onClose={this.closeModal}
+        >
+          <div className="modal">
+            <form onSubmit={this.updateRow}>
+            <div>
+            <label>{this.state.editField}: </label>
+            <br/>
+            <input type="text" name="EditValue" id="EditValue"
+              onChange={e => this.setState({editValue: e.target.value})}
+            /></div>
+            <br/>
+            <Button variant="contained" id="closeButton" type="submit">
+            Edit
+            </Button>
+            </form>
+            <br/>
+            <Button variant="contained" id="closeButton" onClick={this.closeEditModal}>
+            Close
+            </Button>
+          </div>
+        </Popup>
         <Popup
           open={this.state.open}
           closeOnDocumentClick

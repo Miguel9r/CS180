@@ -67,6 +67,13 @@ app.post('/api/delete', (req, res) => {
     search(last_query),
   );
 });
+app.post('/api/update', (req, res) => {
+  console.log(req.body);
+  updateRow(req.body)
+  res.send(
+    search(last_query),
+  );
+});
 
 app.post('/api/insert', (req, res) => { // used for calling the addRow function
   console.log(req.body);
@@ -89,6 +96,34 @@ function deleteRow(row) {
     if(rows[i][8] === row.delete)
     {
       rows.splice(i, 1);
+      break;
+    }
+  }
+  writeBlank();
+}
+
+/*
+* Update the row selected from the local database (local array of rows)
+* Then overwrite the db.csv file with the new local database
+*/
+function updateRow(row) {
+  var i;
+  for(i = 0; i<rows.length; i++)
+  {
+    var object = {
+      "Distance": 0,
+      "Company": 1,
+      "Timestamp": 2,
+      "Destination": 3,
+      "Source": 4,
+      "Price": 5,
+      "SurgeMultiplier": 6,
+      "CabType": 7,
+      "Id": 8
+    };
+    if(rows[i][8] === row.update.Id)
+    {
+      rows[i][object[row.field]] = row.value;
       break;
     }
   }
