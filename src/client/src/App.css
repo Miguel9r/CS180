@@ -19,7 +19,7 @@
 
 .Search-header {
   padding-top: 20px;
-  background-color: #000000;
+  background-color: rgb(73, 73, 73);
   display: flex;
   justify-content: center;
   font-size: calc(10px + 2vmin);
@@ -84,4 +84,10 @@
   text-align: center;
   background-color: #8a8a8a;
   color: black;
+}
+.modal {
+  padding: 12px;
+}
+#errorMsg {
+  padding-bottom: 32px;
 }

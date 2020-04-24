@@ -33,6 +33,10 @@ var last_query;
 */
 readInterface.on('line', function(line) {
   var row = line.split(',');
+  if(row[8] >= id)
+  {
+    id = row[8]+1;
+  }
   rows.push(row);
 }).on('close', function(line){
   console.log("File completely read");
@@ -97,15 +101,17 @@ function deleteRow(row) {
 */
 
 function addRow(info) {
-  var total_rows = rows.length + 1; // increasing the total rows, and the ID
-  results = [];
-
-  for (var i = 0; i < 8; i++) {
-    results.push(info);
+  newRow = [];
+  for(x in info)
+  {
+    newRow.push(info[x]);
   }
+  newRow.push(id);
+  id++;
+  rows.push(newRow);
 
-  console.log(results.length + " results");
-  console.log("Inserted the following information: " + info);
+  console.log("Inserted the following information: " + newRow);
+  writeBlank();
   //var returnArr = JSON.stringify(rows);
   //return returnArr;
 }
@@ -124,9 +130,18 @@ function search(criteria) {
     var j = 0;
     for(x in query)
     {
-      if(query[x] != null && !(rows[i][j] === query[x]))
+      if(x == 'Timestamp')
       {
-        add = false;
+        if(query[x] != null && !(rows[i][j] >= query[x] && rows[i][j] < (query[x]+86400000)))
+        {
+          add = false;
+        }
+      }
+      else{
+        if(query[x] != null && !(rows[i][j] === query[x]))
+        {
+          add = false;
+        }
       }
       j++;
     }
