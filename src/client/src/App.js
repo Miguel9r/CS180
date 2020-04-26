@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Popup from "reactjs-popup";
-//import logo from './logo.svg';
 import './App.css';
 import Button from '@material-ui/core/Button';
 import DatePicker from "react-datepicker";
@@ -122,17 +121,15 @@ class App extends Component {
     {
       if(k === 'Distance' && isNaN(this.state.query[k]))
       {
-        alert("Distance must be an integer/decimal.");
+        alert("Distance must be an integer/decimal. Searching with a null value for distance...");
       }
-
-      if(k === 'Price' && isNaN(this.state.query[k]))
+      else if(k === 'Price' && isNaN(this.state.query[k]))
       {
-        alert("Price must be an integer/decimal.");
+        alert("Price must be an integer/decimal. Searching with a null value for price...");
       }
-
-      if(k === 'SurgeMultiplier' && isNaN(this.state.query[k]))
+      else if(k === 'SurgeMultiplier' && isNaN(this.state.query[k]))
       {
-        alert("Price must be an integer/decimal.");
+        alert("Surge Multiplier must be an integer/decimal. Searching with a null value for surge multiplier...");
       }
     }
     if(this.state.post === 'search'){

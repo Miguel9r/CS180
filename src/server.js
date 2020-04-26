@@ -159,9 +159,14 @@ function search(criteria) {
     if(y == 'Distance' && isNaN(query[y]))
     {
       console.log("Error: The Distance has to be an integer.  Setting it to null as Default.");
-      console.log("Old " + y + " value: " + query[y]);
-      query[y] = null;
-      console.log("New " + y + " value: " + query[y]);
+    }
+    else if(y == 'Price' && isNaN(query[y]))
+    {
+      console.log("Error: The Price has to be an integer.  Setting it to null as Default.");
+    }
+    else if(y == 'SurgeMultiplier' && isNaN(query[y]))
+    {
+      console.log("Error: The Surge Multiplier has to be an integer.  Setting it to null as Default.");
     }
   }
   results = [];
@@ -209,13 +214,13 @@ function search(criteria) {
       results.push(object);
     }
   }
-  console.log(results.length + " results");
   if (results.length > 20000) { // limiting the results printed to 20,000
+    console.log("The amount of results are too high: " + results.length + " results");
     results.length = 20000;
+    console.log("Resizing the printed results to avoid a wait time.  New size:")
   }
   console.log(results.length + " results");
   var returnArr = JSON.stringify(results);
-  //console.log(returnArr);
   return returnArr;
 }
 /*
