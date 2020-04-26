@@ -121,15 +121,24 @@ class App extends Component {
     {
       if(k === 'Distance' && isNaN(this.state.query[k]))
       {
-        alert("Distance must be an integer/decimal. Searching with a null value for distance...");
+        alert("Distance must be an integer/decimal. Searching with a null value for Distance...");
       }
       else if(k === 'Price' && isNaN(this.state.query[k]))
       {
-        alert("Price must be an integer/decimal. Searching with a null value for price...");
+        alert("Price must be an integer/decimal. Searching with a null value for Price...");
       }
       else if(k === 'SurgeMultiplier' && isNaN(this.state.query[k]))
       {
-        alert("Surge Multiplier must be an integer/decimal. Searching with a null value for surge multiplier...");
+        alert("Surge Multiplier must be an integer/decimal. Searching with a null value for Surge Multiplier...");
+      }
+      else if(k === 'Company' && this.state.query[k] !== null)
+      {
+        if (this.state.query[k] === 'Uber' || this.state.query[k] === 'Lyft') {
+          // do nothing
+        }else {
+          alert("Company must be either Uber/Lyft. Searching with a null value for Company...");
+          this.state.query[k] = null;
+        }
       }
     }
     if(this.state.post === 'search'){
