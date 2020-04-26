@@ -117,7 +117,7 @@ class App extends Component {
   handleSubmit = async e => {
     e.preventDefault();
     console.log(this.state.post);
-    for(var k in this.state.query)
+    for(var k in this.state.query)  // used for validation checking
     {
       if(k === 'Distance' && isNaN(this.state.query[k]))
       {
@@ -264,21 +264,18 @@ render() {
           <label>Distance: </label>
           <input type="text" name="Distance" id="Distance"
             onChange={e => this.setDistance(e)}/>
-
           </div>
           <div>
           <label>Company: </label>
           <input type="text" name="Company" id="Company"
             onChange={e => this.setCompany(e)}/>
-
           </div>
           <div>
           <label>Date: </label>
           <DatePicker
             showPopperArrow={false}
             selected={this.state.startDate}
-            onChange={this.setTimestamp}
-          />
+            onChange={this.setTimestamp}/>
           </div>
           <div>
           <label>Destination: </label>
