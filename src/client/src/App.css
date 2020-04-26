@@ -28,7 +28,7 @@
 }
 
 .block-1 {
-  margin-top: 50px;
+  margin-top: 10px;
   display: block;
   width: 100%;
   border: double;
@@ -41,11 +41,24 @@
 }
 
 .block-2 {
-  margin-top: 50px;
+  margin-top: 10px;
   display: block;
   width: 100%;
   border: double;
   background-color: #247d3c;
+  font-size: 28px;
+  padding: 10px 10px;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+}
+
+.block-3 {
+  margin-top: 10px;
+  display: block;
+  width: 100%;
+  border: double;
+  background-color: #248AEA;
   font-size: 28px;
   padding: 10px 10px;
   color: white;

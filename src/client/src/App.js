@@ -118,7 +118,24 @@ class App extends Component {
   handleSubmit = async e => {
     e.preventDefault();
     console.log(this.state.post);
-    if(this.state.post == 'search'){
+    for(var k in this.state.query)
+    {
+      if(k === 'Distance' && isNaN(this.state.query[k]))
+      {
+        alert("Distance must be an integer/decimal.");
+      }
+
+      if(k === 'Price' && isNaN(this.state.query[k]))
+      {
+        alert("Price must be an integer/decimal.");
+      }
+
+      if(k === 'SurgeMultiplier' && isNaN(this.state.query[k]))
+      {
+        alert("Price must be an integer/decimal.");
+      }
+    }
+    if(this.state.post === 'search'){
       var valid = false;
       for(var x in this.state.query)
       {
@@ -140,10 +157,10 @@ class App extends Component {
         this.setState({ responseToPost: JSON.parse(body) });
       }
     }else{
-      var valid = true;
-      for(var x in this.state.query)
+      valid = true;
+      for(var y in this.state.query)
       {
-        if(this.state.query[x] == null)
+        if(this.state.query[y] == null)   // if not all the fields are filled, then you can't insert a new item into DB.
         {
           valid = false;
         }
@@ -164,7 +181,9 @@ class App extends Component {
       }
     }
   };
-
+  handleValidation(){
+    //let fields = this.state;
+  }
   deleteRow = async row => {
     console.log("Heyy");
     const response = await fetch('/api/delete', {
@@ -238,13 +257,15 @@ render() {
           <div>
           <label>Distance: </label>
           <input type="text" name="Distance" id="Distance"
-            onChange={e => this.setDistance(e)}
-          /></div>
+            onChange={e => this.setDistance(e)}/>
+
+          </div>
           <div>
           <label>Company: </label>
           <input type="text" name="Company" id="Company"
-            onChange={e => this.setCompany(e)}
-          /></div>
+            onChange={e => this.setCompany(e)}/>
+
+          </div>
           <div>
           <label>Date: </label>
           <DatePicker
@@ -281,6 +302,7 @@ render() {
         <br/>
         <button onClick={e => this.setState({ post: e.target.value, responseToPost: [] })} value="search" type="submit" class="block-1">Search</button>
         <button onClick={e => this.setState({ post: e.target.value })} type="submit" value="add" class="block-2">Insert</button>
+        <input class="block-3" type="reset" value="Reset"/>
         </form>
 
         </header>
