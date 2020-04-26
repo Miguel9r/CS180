@@ -132,7 +132,7 @@ function updateRow(row) {
 
 /*
 * Insert the info that was added into the fields to the database
-* STILL NEEDS A LOT OF WORK DONE
+*
 */
 
 function addRow(info) {
@@ -147,8 +147,6 @@ function addRow(info) {
 
   console.log("Inserted the following information: " + newRow);
   writeBlank();
-  //var returnArr = JSON.stringify(rows);
-  //return returnArr;
 }
 
 /*
@@ -157,6 +155,15 @@ function addRow(info) {
 */
 function search(criteria) {
   var query = criteria;
+  for (y in query) {
+    if(y == 'Distance' && isNaN(query[y]))
+    {
+      console.log("Error: The Distance has to be an integer.  Setting it to null as Default.");
+      console.log("Old " + y + " value: " + query[y]);
+      query[y] = null;
+      console.log("New " + y + " value: " + query[y]);
+    }
+  }
   results = [];
   var show = true;
   for(var i = 1; i < rows.length; i++)
@@ -196,11 +203,15 @@ function search(criteria) {
       j= 0;
       for(x in object)
       {
-        object[x] = rows[i][j];
-        j++;
+          object[x] = rows[i][j];
+          j++;
       }
       results.push(object);
     }
+  }
+  console.log(results.length + " results");
+  if (results.length > 20000) { // limiting the results printed to 20,000
+    results.length = 20000;
   }
   console.log(results.length + " results");
   var returnArr = JSON.stringify(results);
