@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Popup from "reactjs-popup";
 import './App.css';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Col, Container, Row, Button} from "react-bootstrap";
 
 
 class App extends Component {
@@ -258,56 +260,79 @@ render() {
         </p>
         </header>
         <header className="Search-header">
+          <Container>
         <p>{this.state.response}</p>
         <form onSubmit={this.handleSubmit}>
-          <div>
+
+          <Row className="textfieldrow">
+            <Col md={4}>
           <label>Distance: </label>
           <input type="text" name="Distance" id="Distance"
             onChange={e => this.setDistance(e)}/>
-          </div>
-          <div>
+            </Col>
+          <Col md={4}>
           <label>Company: </label>
           <input type="text" name="Company" id="Company"
             onChange={e => this.setCompany(e)}/>
-          </div>
-          <div>
+          </Col>
+          <Col md={4}>
           <label>Date: </label>
           <DatePicker
             showPopperArrow={false}
             selected={this.state.startDate}
             onChange={this.setTimestamp}/>
-          </div>
-          <div>
-          <label>Destination: </label>
-          <input type="text" name="Destination" id="Destination"
-            onChange={e => this.setDestination(e)}
-          /></div>
-          <div>
-          <label>Source: </label>
-          <input type="text" name="Source" id="Source"
-            onChange={e => this.setSource(e)}
-          /></div>
-          <div>
-          <label>Price: </label>
-          <input type="text" name="Price" id="Price"
-            onChange={e => this.setPrice(e)}
-          /></div>
-          <div>
+          </Col>
+          </Row>
+          <Row className="textfieldrow">
+            <Col md={4}>
+              <label>Destination: </label>
+              <input type="text" name="Destination" id="Destination"
+                onChange={e => this.setDestination(e)}
+              />
+            </Col>
+          <Col md={4}>
+            <label>Source: </label>
+            <input type="text" name="Source" id="Source"
+              onChange={e => this.setSource(e)}
+            />
+          </Col>
+          <Col md={4}>
+            <label>Price: </label>
+            <input type="text" name="Price" id="Price"
+              onChange={e => this.setPrice(e)}
+            />
+          </Col>
+          </Row>
+          <Row className="textfieldrow">
+            <Col md={2}></Col>
+            <Col md={4}>
           <label>Surge Multiplier: </label>
           <input type="text" name="SurgeMultiplier" id="SurgeMultiplier"
             onChange={e => this.setSurgeMultiplier(e)}
-          /></div>
-          <div>
-          <label>Cab Type: </label>
-          <input type="text" name="CabType" id="CabType"
-            onChange={e => this.setCabType(e)}
-          /></div>
-        <br/>
-        <button onClick={e => this.setState({ post: e.target.value, responseToPost: [] })} value="search" type="submit" class="block-1">Search</button>
-        <button onClick={e => this.setState({ post: e.target.value })} type="submit" value="add" class="block-2">Insert</button>
-        <input class="block-3" type="reset" value="Reset"/>
-        </form>
+          />
+            </Col>
+            <Col md={4}>
+              <label>Cab Type: </label>
+              <input type="text" name="CabType" id="CabType"
+                     onChange={e => this.setCabType(e)}
+              />
+            </Col>
+            <Col md={2}></Col>
+          </Row>
+          <Row className="buttonrow">
+            <Col>
+        <Button onClick={e => this.setState({ post: e.target.value, responseToPost: [] })} value="search" type="submit" variant="outline-primary" className="searchbutton">Search</Button>
+            </Col>
+            <Col>
+              <Button onClick={e => this.setState({ post: e.target.value })} type="submit" value="add" variant="outline-success" className="insertbutton" >Insert</Button>
+            </Col>
+            <Col>
+              <Button type="reset" value="Reset" variant="outline-warning" className="resetbutton">Reset</Button>
+            </Col>
+          </Row>
 
+        </form>
+        </Container>
         </header>
         <Popup
           open={this.state.openEdit}
@@ -361,6 +386,7 @@ render() {
                   {this.renderTableData()}
                </tbody>
           </table>
+
       </div>
     );
   }

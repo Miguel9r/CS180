@@ -65,7 +65,27 @@
   cursor: pointer;
   text-align: center;
 }
+.row.textfieldrow{
+  flex-wrap: nowrap;
+}
+.row.buttonrow
+{
+  flex-wrap: nowrap;
+  padding-top: 20px;
+}
 
+.btn-outline-success.insertbutton
+{
+  width: 250px;
+}
+.btn-outline-primary.searchbutton
+{
+  width: 250px;
+}
+.btn-outline-warning.resetbutton
+{
+  width: 250px;
+}
 #delete {
   color: blue;
 }
