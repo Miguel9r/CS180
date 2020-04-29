@@ -156,7 +156,7 @@ function addRow(info) {
 function search(criteria) {
   var query = criteria;
   for (y in query) {
-    if(y == 'Distance' && isNaN(query[y]))
+    if(y == 'Distance' && isNaN(query[y]))  // Validation checks
     {
       console.log("Error: The Distance has to be an integer.  Setting it to null as Default.");
     }
@@ -194,7 +194,7 @@ function search(criteria) {
     }
     if(add == true)
     {
-      var object = {
+      var object = {  // needed to create for use of ID in object
         "Distance": "0.44",
         "Company": "Lyft",
         "Timestamp": 1544952607890,

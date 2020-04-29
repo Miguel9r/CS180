@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
 class App extends Component {
   state = {
     response: '',
@@ -145,12 +144,12 @@ class App extends Component {
       var valid = false;
       for(var x in this.state.query)
       {
-        if(!(this.state.query[x] == null))
+        if(!(this.state.query[x] == null))  // if all text boxes are empty, you can't search
         {
           valid = true;
         }
       }
-      if(valid){
+      if(valid){  // if there is at least one text box with some values, you can search the DB
         const response = await fetch('/api/query', {
           method: 'POST',
           headers: {
@@ -162,18 +161,18 @@ class App extends Component {
 
         this.setState({ responseToPost: JSON.parse(body) });
       }
-    }else{
+    }else{ // if the insert button is pressed
       valid = true;
       for(var y in this.state.query)
       {
-        if(this.state.query[y] == null)   // if not all the fields are filled, then you can't insert a new item into DB.
+        if(this.state.query[y] == null)   // if not all the text boxes are filled, then you can't insert a new item into DB
         {
           valid = false;
         }
       }
       if(!valid){
         this.setState({ open: true });
-      }else{
+      }else{  // if all the text boxes are filled, insert into DB.
         const response = await fetch('/api/insert', {
           method: 'POST',
           headers: {
