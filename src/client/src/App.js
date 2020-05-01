@@ -266,8 +266,11 @@ render() {
           </div>
           <div>
           <label>Company: </label>
-          <input type="text" name="Company" id="Company"
-            onChange={e => this.setCompany(e)}/>
+          <select value={this.state.value} onChange={e => this.setCompany(e)}>
+            <option selected-value=""></option>
+            <option value="Uber">Uber</option>
+            <option value="Lyft">Lyft</option>
+          </select>
           </div>
           <div>
           <label>Date: </label>
@@ -306,7 +309,6 @@ render() {
         <button onClick={e => this.setState({ post: e.target.value })} type="submit" value="add" class="block-2">Insert</button>
         <input class="block-3" type="reset" value="Reset"/>
         </form>
-
         </header>
         <Popup
           open={this.state.openEdit}
