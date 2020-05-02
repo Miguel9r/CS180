@@ -10,7 +10,8 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "react-dropdown": "^1.7.0",
-    "react-native-material-dropdown": "^0.11.1"
+    "react-native-material-dropdown": "^0.11.1",
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "concurrently": "^5.2.0"
