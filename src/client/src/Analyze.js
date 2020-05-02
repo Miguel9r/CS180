@@ -272,7 +272,7 @@ class Analyze extends Component{
               <div><DatePicker
                 showPopperArrow={false}
                 selected={this.state.startDate}
-                onChange={this.setTimestamp}
+                onChange={this.setTimestamp}/>
               </div>
             </div>
           </div>
