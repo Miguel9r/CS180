@@ -24,7 +24,7 @@ class Analyze extends Component{
       editField: null,
       editRow: null,
       editValue: null,
-      startDate: null
+      startDate: null,
     };
     setDistance(e){
       const val = e.target.value===""?null:e.target.value;
@@ -90,6 +90,10 @@ class Analyze extends Component{
         query.CabType = val;                     // update the name property, assign a new value
         return { query };
         })
+    }
+
+    setAnalyticFeature(e) {
+      //need to fill in still
     }
 
     componentDidMount() {
@@ -255,28 +259,31 @@ class Analyze extends Component{
           <div class="row">
             <div class="column1">
               <div><label>Analytic Feature:</label></div>
-              <div><label>Date:</label></div>
+              <div><br/></div>
+              <div><label>Input Date:</label></div>
             </div>
             <div class="column2">
-              <div><select value={this.state.value} onChange={e => this.setCompany(e)}>
+              <div><select value={this.state.value} onChange={e => this.setAnalyticFeature(e)}>
                 <option selected-value=""></option>
-                <option value="most_pickups">What neighborhood has the most pickups on a certain day?</option>
-                <option value="most_dropoffs">What neighborhood has the most drop offs on a certain day?</option>
+                <option value="most_pickups">* What neighborhood has the most pickups on a certain day?</option>
+                <option value="most_dropoffs">* What neighborhood has the most drop offs on a certain day?</option>
                 <option value="more_uber">What neighborhoods have more Uber rides than Lyft rides?</option>
                 <option value="more_lyft">What neighborhoods have more Lyft rides than Uber rides?</option>
-                <option value="start_point">What starting point is the most popular at a certain time of day?</option>
-                <option value="end_point">What ending point is the most popular at a certain time of day?</option>
+                <option value="start_point">* What starting point is the most popular at a certain time of day?</option>
+                <option value="end_point">* What ending point is the most popular at a certain time of day?</option>
                 <option value="most_rides">What specific day has the most rides?</option>
                 <option value="top-3">What are the top-3 most popular types of cabs taken?</option>
               </select></div>
+              <div class="small-text"><strong><u>(* - Requires Date Input)</u></strong></div>
               <div><DatePicker
                 showPopperArrow={false}
                 selected={this.state.startDate}
-                onChange={this.setTimestamp}/>
+                onChange={this.setTimestamp}
+                openToDate={new Date("2018/09/28")}/>
               </div>
             </div>
           </div>
-          <button onClick={e => this.setState({ post: e.target.value, responseToPost: [] })} value="search" type="submit" class="block-1">Search</button>
+          <button onClick={e => this.setState({ post: e.target.value, responseToPost: [] })} value="search" type="submit" class="block-2">Submit</button>
           <a href="http://localhost:3000/"><input type="button" value='Home' class="block-4"/></a>
           </form>
           </header>
