@@ -27,12 +27,17 @@
   padding-bottom: 30px;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .block-1 {
   margin-top: 10px;
   display: block;
   width: 100%;
   border: double;
-  background-color: #910000;
+  background-color: #247d3c;
   font-size: 28px;
   padding: 10px 10px;
   color: white;
@@ -45,7 +50,7 @@
   display: block;
   width: 100%;
   border: double;
-  background-color: #247d3c;
+  background-color: #910000;
   font-size: 28px;
   padding: 10px 10px;
   color: white;
@@ -66,12 +71,42 @@
   text-align: center;
 }
 
-#delete {
-  color: blue;
+.block-4 {
+  margin-top: 10px;
+  display: block;
+  width: 100%;
+  border: double;
+  background-color: #000000;
+  font-size: 28px;
+  padding: 10px 10px;
+  color: white;
+  cursor: pointer;
+  text-align: center;
 }
 
-#Distance, #Company, #Timestamp, #Source, #Price, #SurgeMultiplier {
-  margin-right: 50px;
+/* Create two equal columns that floats next to each other */
+.column1 {
+  padding-right: 10px;
+  text-align: right;
+}
+
+.column2 {
+  padding-left: 10px;
+  text-align: left;
+}
+
+#select {
+  width: 175px;
+}
+
+/* Clear floats after the columns */
+.row {
+  display: flex;
+  padding-bottom: 15px;
+}
+
+#delete {
+  color: blue;
 }
 
 #results {

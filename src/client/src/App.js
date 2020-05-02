@@ -252,62 +252,71 @@ render() {
     return (
       <div className="App">
         <header className="App-header">
-        <p>
-          <strong>Uber/Lyft Cab Pickup Helper</strong>
-        </p>
+        <p><strong><a href="../">Uber/Lyft Cab Pickup Helper</a></strong></p>
         </header>
         <header className="Search-header">
-        <p>{this.state.response}</p>
         <form onSubmit={this.handleSubmit}>
-          <div>
-          <label>Distance: </label>
-          <input type="text" name="Distance" id="Distance"
-            onChange={e => this.setDistance(e)}/>
+        <div class="row">
+          <div class="column1">
+            <div><label>Distance:</label></div>
+            <div><label>Company:</label></div>
+            <div><label>Date:</label></div>
+            <div><label>Destination:</label></div>
+            <div><label>Source:</label></div>
+            <div><label>Price:</label></div>
+            <div><label>Surge Multiplier:</label></div>
+            <div><label>Cab Type:</label></div>
           </div>
-          <div>
-          <label>Company: </label>
-          <select value={this.state.value} onChange={e => this.setCompany(e)}>
-            <option selected-value=""></option>
-            <option value="Uber">Uber</option>
-            <option value="Lyft">Lyft</option>
-          </select>
+          <div class="column2">
+            <div><input type="text" name="Distance" id="Distance" size="20"
+              onChange={e => this.setDistance(e)}/></div>
+            <div><select value={this.state.value} onChange={e => this.setCompany(e)} id="select">
+              <option selected-value=""></option>
+              <option value="Uber">Uber</option>
+              <option value="Lyft">Lyft</option>
+            </select></div>
+            <div><DatePicker
+              showPopperArrow={false}
+              selected={this.state.startDate}
+              onChange={this.setTimestamp}/></div>
+            <div><input type="text" name="Destination" id="Destination"
+              onChange={e => this.setDestination(e)}/></div>
+            <div><input type="text" name="Source" id="Source"
+              onChange={e => this.setSource(e)}/></div>
+            <div><input type="text" name="Price" id="Price"
+              onChange={e => this.setPrice(e)}/></div>
+            <div><select value={this.state.value} onChange={e => this.setSurgeMultiplier(e)} id="select">
+              <option selected-value=""></option>
+              <option value="1">1</option>
+              <option value="1.25">1.25</option>
+              <option value="1.5">1.5</option>
+              <option value="1.75">1.75</option>
+              <option value="2">2</option>
+              <option value="2.5">2.5</option>
+              <option value="3">3</option>
+            </select></div>
+            <div><select value={this.state.value} onChange={e => this.setCabType(e)} id="select">
+              <option selected-value=""></option>
+              <option value="Black">Black</option>
+              <option value="Black SUV">Black SUV</option>
+              <option value="Lux">Lux</option>
+              <option value="Lux Black">Lux Black</option>
+              <option value="Lux Black XL">Lux Black XL</option>
+              <option value="Lyft">Lyft</option>
+              <option value="Lyft XL">Lyft XL</option>
+              <option value="Shared">Shared</option>
+              <option value="Taxi">Taxi</option>
+              <option value="UberPool">UberPOOL</option>
+              <option value="UberX">UberX</option>
+              <option value="UberXL">UberXL</option>
+              <option value="WAV">WAV</option>
+            </select></div>
           </div>
-          <div>
-          <label>Date: </label>
-          <DatePicker
-            showPopperArrow={false}
-            selected={this.state.startDate}
-            onChange={this.setTimestamp}/>
-          </div>
-          <div>
-          <label>Destination: </label>
-          <input type="text" name="Destination" id="Destination"
-            onChange={e => this.setDestination(e)}
-          /></div>
-          <div>
-          <label>Source: </label>
-          <input type="text" name="Source" id="Source"
-            onChange={e => this.setSource(e)}
-          /></div>
-          <div>
-          <label>Price: </label>
-          <input type="text" name="Price" id="Price"
-            onChange={e => this.setPrice(e)}
-          /></div>
-          <div>
-          <label>Surge Multiplier: </label>
-          <input type="text" name="SurgeMultiplier" id="SurgeMultiplier"
-            onChange={e => this.setSurgeMultiplier(e)}
-          /></div>
-          <div>
-          <label>Cab Type: </label>
-          <input type="text" name="CabType" id="CabType"
-            onChange={e => this.setCabType(e)}
-          /></div>
-        <br/>
+        </div>
         <button onClick={e => this.setState({ post: e.target.value, responseToPost: [] })} value="search" type="submit" class="block-1">Search</button>
         <button onClick={e => this.setState({ post: e.target.value })} type="submit" value="add" class="block-2">Insert</button>
         <input class="block-3" type="reset" value="Reset"/>
+        <a href="http://localhost:3000/analytics.html"><input type="button" value='Analytics' class="block-4"/></a>
         </form>
         </header>
         <Popup
