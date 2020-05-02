@@ -41,6 +41,17 @@ readInterface.on('line', function(line) {
 }).on('close', function(line){
   console.log("File completely read");
   id = rows.length;
+  for(i = 1; i<rows.length; i++)
+  {
+    if(!neighbourhoods.includes(rows[i][3]))
+    {
+      neighbourhoods.push(rows[i][3]);
+    }
+    if(!neighbourhoods.includes(rows[i][4]))
+    {
+      neighbourhoods.push(rows[i][4]);
+    }
+  }
   console.log("Total of rows: " + id);
 });
 
@@ -74,6 +85,12 @@ app.post('/api/update', (req, res) => {
     search(last_query),
   );
 });
+app.post('/api/stats', (req, res) => {
+  console.log(req.body);
+  res.send(
+    stats(req.body),
+  );
+});
 
 app.post('/api/insert', (req, res) => { // used for calling the addRow function
   console.log(req.body);
@@ -84,6 +101,136 @@ app.post('/api/insert', (req, res) => { // used for calling the addRow function
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+var neighbourhoods = [];
+
+/*
+* Analytics function
+* Return an array of those rows as objects
+*/
+function stats(criteria) {
+  switch(criteria.Stat)
+  {
+    case 'NeighbourhoodPickup':
+      var count = [];
+      for(i = 1; i<rows.length; i++)
+      {
+        if(rows[i][2] >= criteria.Date && rows[i][2] < (criteria.Date+86400000))
+        {
+          if(count.length <= neighbourhoods.indexOf(rows[i][4]))
+          {
+            for(t = count.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
+            {
+              count.push(0);
+            }
+          }
+          count[neighbourhoods.indexOf(rows[i][4])]+=1;
+        }
+      }
+      var ret = [];
+      for(j = 0;j<neighbourhoods.length;j++)
+      {
+        ret.push({Neighbourhood: neighbourhoods[j], Count: count[j]});
+      }
+      return JSON.stringify(ret);
+    case 'NeighbourhoodDropoff':
+      var count = [];
+      for(i = 1; i<rows.length; i++)
+      {
+        if(rows[i][2] >= criteria.Date && rows[i][2] < (criteria.Date+86400000))
+        {
+          if(count.length <= neighbourhoods.indexOf(rows[i][3]))
+          {
+            for(t = count.length; t <= neighbourhoods.indexOf(rows[i][3]); t++)
+            {
+              count.push(0);
+            }
+          }
+          count[neighbourhoods.indexOf(rows[i][3])]+=1;
+        }
+      }
+      var ret = [];
+      for(j = 0;j<neighbourhoods.length;j++)
+      {
+        ret.push({Neighbourhood: neighbourhoods[j], Count: count[j]});
+      }
+      return JSON.stringify(ret);
+    case 'NeighbourhoodUber':
+      var count = [];
+      var lyftcount = [];
+      for(i = 1; i<rows.length; i++)
+      {
+        if(rows[i][1] == 'Uber')
+        {
+          if(count.length <= neighbourhoods.indexOf(rows[i][4]))
+          {
+            for(t = count.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
+            {
+              count.push(0);
+            }
+          }
+          count[neighbourhoods.indexOf(rows[i][4])]+=1;
+        }
+        if(rows[i][1] == 'Lyft')
+        {
+          if(lyftcount.length <= neighbourhoods.indexOf(rows[i][4]))
+          {
+            for(t = lyftcount.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
+            {
+              lyftcount.push(0);
+            }
+          }
+          lyftcount[neighbourhoods.indexOf(rows[i][4])]+=1;
+        }
+      }
+      var ret = [];
+      for(j = 0;j<neighbourhoods.length;j++)
+      {
+        if(count[j]>lyftcount[j])
+        {ret.push({Neighbourhood: neighbourhoods[j], UberCount: count[j], LyftCount: lyftcount[j]});}
+      }
+      
+      return JSON.stringify(ret);
+    case 'NeighbourhoodLyft':
+      var count = [];
+      var lyftcount = [];
+      for(i = 1; i<rows.length; i++)
+      {
+        if(rows[i][1] == 'Uber')
+        {
+          if(count.length <= neighbourhoods.indexOf(rows[i][4]))
+          {
+            for(t = count.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
+            {
+              count.push(0);
+            }
+          }
+          count[neighbourhoods.indexOf(rows[i][4])]+=1;
+        }
+        if(rows[i][1] == 'Lyft')
+        {
+          if(lyftcount.length <= neighbourhoods.indexOf(rows[i][4]))
+          {
+            for(t = lyftcount.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
+            {
+              lyftcount.push(0);
+            }
+          }
+          lyftcount[neighbourhoods.indexOf(rows[i][4])]+=1;
+        }
+      }
+      var ret = [];
+      for(j = 0;j<neighbourhoods.length;j++)
+      {
+        if(count[j]<lyftcount[j])
+        {ret.push({Neighbourhood: neighbourhoods[j], UberCount: count[j], LyftCount: lyftcount[j]});}
+      }
+      return JSON.stringify(ret);
+    default:
+      return '';
+    // code block
+  }
+}
 
 /*
 * Delete the row selected from the local database (local array of rows)
@@ -248,5 +395,17 @@ function writeBack(){
     string = string.substring(0, string.length - 1);
     string += '\n';
     stream.write(string);
+  }
+  neighbourhoods = []
+  for(i = 1; i<rows.length; i++)
+  {
+    if(!neighbourhoods.includes(rows[i][3]))
+    {
+      neighbourhoods.push(rows[i][3]);
+    }
+    if(!neighbourhoods.includes(rows[i][4]))
+    {
+      neighbourhoods.push(rows[i][4]);
+    }
   }
 }
