@@ -95,6 +95,17 @@ a {
   text-align: left;
 }
 
+.small-text {
+  padding-top: 10px;
+  text-align: center;
+  font-size: 15px;
+  padding-bottom: 5px;
+}
+
+.date2 {
+  width: 175px;
+}
+
 #select {
   width: 175px;
 }
