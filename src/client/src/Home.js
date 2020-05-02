@@ -274,7 +274,8 @@ class Home extends Component{
               <div><DatePicker
                 showPopperArrow={false}
                 selected={this.state.startDate}
-                onChange={this.setTimestamp}/></div>
+                onChange={this.setTimestamp}
+                openToDate={new Date("2018/09/28")}/></div>
               <div><input type="text" name="Destination" id="Destination"
                 onChange={e => this.setDestination(e)}/></div>
               <div><input type="text" name="Source" id="Source"
