@@ -132,7 +132,7 @@ class Analyze extends Component{
           </header>
           <table id='results'>
             <th>Result</th>
-            <th>Count</th>
+            <th>Number of Rides</th>
             <th>Number of Uber Rides</th>
             <th>Number of Lyft Rides</th>
             <tbody>

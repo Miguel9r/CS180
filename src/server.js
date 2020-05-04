@@ -137,7 +137,7 @@ function stats(criteria) {
       var count = [];
       for(i = 1; i<rows.length; i++)
       {
-        if(rows[i][2] >= criteria.Date && rows[i][2] < (criteria.Date+86400000))
+        if(rows[i][2] >= criteria.Timestamp && rows[i][2] < (criteria.Timestamp+86400000))
         {
           if(count.length <= neighbourhoods.indexOf(rows[i][3]))
           {
