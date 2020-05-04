@@ -115,6 +115,7 @@ class Home extends Component{
     handleSubmit = async e => {
       e.preventDefault();
       console.log(this.state.post);
+      console.log(this.state.query);
       for(var k in this.state.query)  // used for validation checking
       {
         if(k === 'Distance' && isNaN(this.state.query[k]))

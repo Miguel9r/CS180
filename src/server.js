@@ -115,7 +115,7 @@ function stats(criteria) {
       var count = [];
       for(i = 1; i<rows.length; i++)
       {
-        if(rows[i][2] >= criteria.Date && rows[i][2] < (criteria.Date+86400000))
+        if(rows[i][2] >= criteria.Timestamp && rows[i][2] < (criteria.Timestamp+86400000))
         {
           if(count.length <= neighbourhoods.indexOf(rows[i][4]))
           {
@@ -189,7 +189,11 @@ function stats(criteria) {
         if(count[j]>lyftcount[j])
         {ret.push({Neighbourhood: neighbourhoods[j], UberCount: count[j], LyftCount: lyftcount[j]});}
       }
-      
+      console.log("Number of results: " + ret.length);
+      if (ret.length == 0) {
+        ret.push({Neighbourhood: "NONE", UberCount: "", LyftCount: ""});
+        console.log("Number of results: " + ret.length);
+      }
       return JSON.stringify(ret);
     case 'NeighbourhoodLyft':
       var count = [];
@@ -224,6 +228,11 @@ function stats(criteria) {
       {
         if(count[j]<lyftcount[j])
         {ret.push({Neighbourhood: neighbourhoods[j], UberCount: count[j], LyftCount: lyftcount[j]});}
+      }
+      console.log("Number of results: " + ret.length);
+      if (ret.length == 0) {
+        ret.push({Neighbourhood: "NONE", UberCount: "", LyftCount: ""});
+        console.log("Number of results: " + ret.length);
       }
       return JSON.stringify(ret);
     default:
