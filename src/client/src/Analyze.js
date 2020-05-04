@@ -72,9 +72,14 @@ class Analyze extends Component{
         }
       }
     };
-
+    compare(a, b) {
+      if (a.Count > b.Count) return -1;
+      if (b.Count > a.Count) return 1;
+    
+      return 0;
+    }
     renderTableData() {
-      return this.state.responseToPost.map((ride, index) => {
+      return this.state.responseToPost.sort(this.compare).map((ride, index) => {
          const { Neighbourhood,
           Count,
           UberCount,

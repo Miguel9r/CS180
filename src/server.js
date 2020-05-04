@@ -187,7 +187,7 @@ function stats(criteria) {
       for(j = 0;j<neighbourhoods.length;j++)
       {
         if(count[j]>lyftcount[j])
-        {ret.push({Neighbourhood: neighbourhoods[j], UberCount: count[j], LyftCount: lyftcount[j]});}
+        {ret.push({Neighbourhood: neighbourhoods[j], Count: count[j]+lyftcount[j], UberCount: count[j], LyftCount: lyftcount[j]});}
       }
       console.log("Number of results: " + ret.length);
       if (ret.length == 0) {
@@ -227,7 +227,7 @@ function stats(criteria) {
       for(j = 0;j<neighbourhoods.length;j++)
       {
         if(count[j]<lyftcount[j])
-        {ret.push({Neighbourhood: neighbourhoods[j], UberCount: count[j], LyftCount: lyftcount[j]});}
+        {ret.push({Neighbourhood: neighbourhoods[j], Count: count[j]+lyftcount[j], UberCount: count[j], LyftCount: lyftcount[j]});}
       }
       console.log("Number of results: " + ret.length);
       if (ret.length == 0) {
