@@ -277,10 +277,36 @@ class Home extends Component{
                 selected={this.state.startDate}
                 onChange={this.setTimestamp}
                 openToDate={new Date("2018/09/28")}/></div>
-              <div><input type="text" name="Destination" id="Destination"
-                onChange={e => this.setDestination(e)}/></div>
-              <div><input type="text" name="Source" id="Source"
-                onChange={e => this.setSource(e)}/></div>
+              <div><select value={this.state.value} onChange={e => this.setDestination(e)} id="select">
+                <option selected-value=""></option>
+                <option value="North Station">North Station</option>
+                <option value="Haymarket Square">Haymarket Square</option>
+                <option value="Northeastern University">Northeastern University</option>
+                <option value="Back Bay">Back Bay</option>
+                <option value="West End">West End</option>
+                <option value="North End">North End</option>
+                <option value="South Station">South Station</option>
+                <option value="Beacon Hill">Beacon Hill</option>
+                <option value="Fenway">Fenway</option>
+                <option value="Theatre District">Theatre District</option>
+                <option value="Boston University">Boston University</option>
+                <option value="Financial District">Financial District</option>
+              </select></div>
+              <div><select value={this.state.value} onChange={e => this.setSource(e)} id="select">
+                <option selected-value=""></option>
+                <option value="North Station">North Station</option>
+                <option value="Haymarket Square">Haymarket Square</option>
+                <option value="Northeastern University">Northeastern University</option>
+                <option value="Back Bay">Back Bay</option>
+                <option value="West End">West End</option>
+                <option value="North End">North End</option>
+                <option value="South Station">South Station</option>
+                <option value="Beacon Hill">Beacon Hill</option>
+                <option value="Fenway">Fenway</option>
+                <option value="Theatre District">Theatre District</option>
+                <option value="Boston University">Boston University</option>
+                <option value="Financial District">Financial District</option>
+              </select></div>
               <div><input type="text" name="Price" id="Price"
                 onChange={e => this.setPrice(e)}/></div>
               <div><select value={this.state.value} onChange={e => this.setSurgeMultiplier(e)} id="select">
