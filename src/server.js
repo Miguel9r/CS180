@@ -28,6 +28,9 @@ var rows = [];
 var id = 0;
 var last_query;
 
+var neighbourhoods = [];
+var dates = [];
+var type = [];
 /*
 * Read the db.csv file
 */
@@ -51,7 +54,16 @@ readInterface.on('line', function(line) {
     {
       neighbourhoods.push(rows[i][4]);
     }
+    if(!dates.includes(Math.floor(rows[i][2]/86400000)))
+    {
+      dates.push(Math.floor(rows[i][2]/86400000));
+    }
+    if(!type.includes(rows[i][7]))
+    {
+      type.push(rows[i][7]);
+    }
   }
+  
   console.log("Total of rows: " + id);
 });
 
@@ -102,7 +114,6 @@ app.post('/api/insert', (req, res) => { // used for calling the addRow function
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-var neighbourhoods = [];
 
 /*
 * Analytics function
@@ -115,7 +126,7 @@ function stats(criteria) {
       var count = [];
       for(i = 1; i<rows.length; i++)
       {
-        if(rows[i][2] >= criteria.Timestamp && rows[i][2] < (criteria.Timestamp+86400000))
+        if(rows[i][2] >= criteria.Option && rows[i][2] < (criteria.Option+86400000))
         {
           if(count.length <= neighbourhoods.indexOf(rows[i][4]))
           {
@@ -137,7 +148,7 @@ function stats(criteria) {
       var count = [];
       for(i = 1; i<rows.length; i++)
       {
-        if(rows[i][2] >= criteria.Timestamp && rows[i][2] < (criteria.Timestamp+86400000))
+        if(rows[i][2] >= criteria.Option && rows[i][2] < (criteria.Option+86400000))
         {
           if(count.length <= neighbourhoods.indexOf(rows[i][3]))
           {
@@ -235,10 +246,102 @@ function stats(criteria) {
         console.log("Number of results: " + ret.length);
       }
       return JSON.stringify(ret);
+    case 'start_point':
+      var count = [];
+      for(i = 1; i<rows.length; i++)
+      {
+        if(rows[i][2]%86400000 >= criteria.Option && rows[i][2]%86400000 < (criteria.Option+3600000))
+        {
+          if(count.length <= neighbourhoods.indexOf(rows[i][3]))
+          {
+            for(t = count.length; t <= neighbourhoods.indexOf(rows[i][3]); t++)
+            {
+              count.push(0);
+            }
+          }
+          count[neighbourhoods.indexOf(rows[i][3])]+=1;
+        }
+      }
+      var ret = [];
+      for(j = 0;j<neighbourhoods.length;j++)
+      {
+        ret.push({Neighbourhood: neighbourhoods[j], Count: count[j]});
+      }
+      return JSON.stringify(ret);
+    case 'end_point':
+      var count = [];
+      for(i = 1; i<rows.length; i++)
+      {
+        if(rows[i][2]%86400000 >= criteria.Option && rows[i][2]%86400000 < (criteria.Option+3600000))
+        {
+          if(count.length <= neighbourhoods.indexOf(rows[i][4]))
+          {
+            for(t = count.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
+            {
+              count.push(0);
+            }
+          }
+          count[neighbourhoods.indexOf(rows[i][4])]+=1;
+        }
+      }
+      var ret = [];
+      for(j = 0;j<neighbourhoods.length;j++)
+      {
+        ret.push({Neighbourhood: neighbourhoods[j], Count: count[j]});
+      }
+      return JSON.stringify(ret);
+    case 'most_rides':
+      var count = [];
+      for(i = 1; i<rows.length; i++)
+      {
+          if(count.length <= dates.indexOf(Math.floor(rows[i][2]/86400000)))
+          {
+            for(t = count.length; t <= dates.indexOf(Math.floor(rows[i][2]/86400000)); t++)
+            {
+              count.push(0);
+            }
+          }
+          count[dates.indexOf(Math.floor(rows[i][2]/86400000))]+=1;
+        
+      }
+      var ret = [];
+      for(j = 0;j<dates.length;j++)
+      {
+        var d = new Date(dates[j]*86400000);
+        ret.push({Neighbourhood: d.toLocaleDateString('en-US'), Count: count[j]});
+      }
+      return JSON.stringify(ret.sort(compare).slice(0, 10));
+    case 'top-3':
+      var count = [];
+      for(i = 1; i<rows.length; i++)
+      {
+          if(count.length <= type.indexOf(rows[i][7]))
+          {
+            for(t = count.length; t <= type.indexOf(rows[i][7]); t++)
+            {
+              count.push(0);
+            }
+          }
+          count[type.indexOf(rows[i][7])]+=1;
+        
+      }
+      var ret = [];
+      for(j = 0;j<type.length;j++)
+      {
+        ret.push({Neighbourhood: type[j], Count: count[j]});
+      }
+      return JSON.stringify(ret.sort(compare).slice(0, 3));
     default:
       return '';
     // code block
   }
+}
+
+function compare(a, b) {
+  if (a.Count > b.Count) return -1;
+  if (b.Count > a.Count) return 1;
+
+  return 0;
 }
 
 /*
@@ -325,8 +428,20 @@ function search(criteria) {
       console.log("Error: The Surge Multiplier has to be an integer.  Setting it to null as Default.");
     }
   }
+  var valid = false;
   results = [];
   var show = true;
+  for(x in query)
+  {
+    if(query[x] != null)
+    {
+      valid = true;
+    }
+  }
+  if(!valid)
+  {
+    return [];
+  }
   for(var i = 1; i < rows.length; i++)
   {
     var add = true;
@@ -370,9 +485,9 @@ function search(criteria) {
       results.push(object);
     }
   }
-  if (results.length > 20000) { // limiting the results printed to 20,000
+  if (results.length > 1000) { // limiting the results printed to 20,000
     console.log("The amount of results are too high: " + results.length + " results");
-    results.length = 20000;
+    results.length = 1000;
     console.log("Resizing the printed results to avoid a wait time.  New size:")
   }
   console.log(results.length + " results");

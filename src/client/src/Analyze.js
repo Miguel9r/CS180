@@ -8,10 +8,11 @@ class Analyze extends Component{
       post: '',
       responseToPost: [],
       query: {
-        Timestamp: null,
+        Option: null,
         Stat: null
       },
       startDate: null,
+      lastStat: null,
     };
     setAnalyticFeature(e) {
       const val = e.target.value===""?null:e.target.value;
@@ -27,7 +28,16 @@ class Analyze extends Component{
       this.setState({startDate: date});
       this.setState(prev => {
         let query = { ...prev.query };  // creating copy of state variable jasper
-        query.Timestamp = val;               // update the name property, assign a new value
+        query.Option = val;               // update the name property, assign a new value
+        return { query };
+        })
+    }
+
+    setTime(e) {
+      const val = e.target.value===""?null:e.target.value;
+      this.setState(prev => {
+        let query = { ...prev.query };  // creating copy of state variable jasper
+        query.Option = val*3600000;                     // update the name property, assign a new value
         return { query };
         })
     }
@@ -59,6 +69,7 @@ class Analyze extends Component{
           }
         }
         if(valid){  // if there is at least one text box with some values, you can search the DB
+          this.setState({ lastStat: this.state.query.Stat });
           const response = await fetch('/api/stats', {
             method: 'POST',
             headers: {
@@ -79,22 +90,158 @@ class Analyze extends Component{
       return 0;
     }
     renderTableData() {
+      if(this.state.lastStat == "top-3"||this.state.lastStat == "most_rides"||this.state.lastStat == "NeighbourhoodPickup"||this.state.lastStat == "NeighbourhoodDropoff"||this.state.lastStat == "start_point"||this.state.lastStat == "end_point")
+     {
       return this.state.responseToPost.sort(this.compare).map((ride, index) => {
          const { Neighbourhood,
           Count,
-          UberCount,
-          LyftCount,
           Id } = ride //destructuring
          return (
             <tr key={Id}>
                <td>{Neighbourhood}</td>
                <td>{Count}</td>
-               <td>{UberCount}</td>
-               <td>{LyftCount}</td>
             </tr>
          )
       })
+    }else if(this.state.lastStat == "NeighbourhoodUber"||this.state.lastStat == "NeighbourhoodLyft")
+    {
+     return this.state.responseToPost.sort(this.compare).map((ride, index) => {
+        const { Neighbourhood,
+         Count,
+         UberCount,
+         LyftCount,
+         Id } = ride //destructuring
+        return (
+           <tr key={Id}>
+              <td>{Neighbourhood}</td>
+              <td>{Count}</td>
+              <td>{UberCount}</td>
+              <td>{LyftCount}</td>
+           </tr>
+        )
+     })
    }
+   }
+   renderOption() {
+     if(this.state.query.Stat == "NeighbourhoodPickup"||this.state.query.Stat == "NeighbourhoodDropoff")
+     {
+      return (
+        <div><DatePicker
+                showPopperArrow={false}
+                selected={this.state.startDate}
+                onChange={this.setTimestamp}
+                openToDate={new Date("2018/09/28")}/>
+        </div>
+      )
+     }
+     if(this.state.query.Stat == "start_point"||this.state.query.Stat == "end_point")
+     {
+      return (
+        <div><select value={this.state.value} onChange={e => this.setTime(e)}>
+                <option selected-value=""></option>
+                <option value="0">0:00</option>
+                <option value="1">1:00</option>
+                <option value="2">2:00</option>
+                <option value="3">3:00</option>
+                <option value="4">4:00</option>
+                <option value="5">5:00</option>
+                <option value="6">6:00</option>
+                <option value="7">7:00</option>
+                <option value="8">8:00</option>
+                <option value="9">9:00</option>
+                <option value="10">10:00</option>
+                <option value="11">11:00</option>
+                <option value="12">12:00</option>
+                <option value="13">13:00</option>
+                <option value="14">14:00</option>
+                <option value="15">15:00</option>
+                <option value="16">16:00</option>
+                <option value="17">17:00</option>
+                <option value="18">18:00</option>
+                <option value="19">19:00</option>
+                <option value="20">20:00</option>
+                <option value="21">21:00</option>
+                <option value="22">22:00</option>
+                <option value="23">23:00</option>
+              </select></div>
+      )
+     }
+ }
+ renderLabel() {
+  if(this.state.query.Stat == "NeighbourhoodPickup"||this.state.query.Stat == "NeighbourhoodDropoff")
+  {
+   return (
+    <div><label>Input Date:</label></div>
+   )
+  }
+  if(this.state.query.Stat == "start_point"||this.state.query.Stat == "end_point")
+  {
+   return (
+    <div><label>Input Hour:</label></div>
+   )
+  }
+}
+renderTable() {
+  if(this.state.lastStat == "NeighbourhoodPickup"||this.state.lastStat == "NeighbourhoodDropoff")
+  {
+   return (
+    <table id='results'>
+    <th>Neighbourhood</th>
+    <th>Number of Rides</th>
+            <tbody>
+              {this.renderTableData()}
+            </tbody>
+          </table>
+   )
+  }else if(this.state.lastStat == "NeighbourhoodUber"||this.state.lastStat == "NeighbourhoodLyft")
+  {
+   return (
+    <table id='results'>
+    <th>Neighbourhood</th>
+    <th>Number of Rides</th>
+    <th>Number of Uber Rides</th>
+    <th>Number of Lyft Rides</th>
+            <tbody>
+              {this.renderTableData()}
+            </tbody>
+          </table>
+   )
+  }
+  else if(this.state.lastStat == "start_point"||this.state.lastStat == "end_point")
+  {
+   return (
+    <table id='results'>
+    <th>Neighbourhood</th>
+    <th>Number of Rides</th>
+            <tbody>
+              {this.renderTableData()}
+            </tbody>
+          </table>
+   )
+  }else if(this.state.lastStat == "most_rides")
+  {
+    return (
+      <table id='results'>
+      <th>Date</th>
+      <th>Number of Rides</th>
+              <tbody>
+                {this.renderTableData()}
+              </tbody>
+            </table>
+     )
+  }else if(this.state.lastStat == "top-3")
+  {
+    return (
+      <table id='results'>
+      <th>Type</th>
+      <th>Number of Rides</th>
+              <tbody>
+                {this.renderTableData()}
+              </tbody>
+            </table>
+     )
+  }
+}
 
   render() {
       return (
@@ -108,7 +255,7 @@ class Analyze extends Component{
             <div class="column1">
               <div><label>Analytic Feature:</label></div>
               <div><br/></div>
-              <div><label>Input Date:</label></div>
+              {this.renderLabel()}
             </div>
             <div class="column2">
               <div><select value={this.state.value} onChange={e => this.setAnalyticFeature(e)}>
@@ -123,27 +270,15 @@ class Analyze extends Component{
                 <option value="top-3">What are the top-3 most popular types of cabs taken?</option>
               </select></div>
               <div class="small-text"><strong><u>(* - Requires Date Input)</u></strong></div>
-              <div><DatePicker
-                showPopperArrow={false}
-                selected={this.state.startDate}
-                onChange={this.setTimestamp}
-                openToDate={new Date("2018/09/28")}/>
-              </div>
+              {this.renderOption()}
             </div>
           </div>
           <button onClick={e => this.setState({ post: e.target.value, responseToPost: [] })} value="analyze" type="submit" class="block-2">Submit</button>
           <a href="http://localhost:3000/"><input type="button" value='Home' class="block-4"/></a>
           </form>
           </header>
-          <table id='results'>
-            <th>Result</th>
-            <th>Number of Rides</th>
-            <th>Number of Uber Rides</th>
-            <th>Number of Lyft Rides</th>
-            <tbody>
-              {this.renderTableData()}
-            </tbody>
-          </table>
+            {this.renderTable()}
+            
         </div>
       );
     }
