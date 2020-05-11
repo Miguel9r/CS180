@@ -249,99 +249,99 @@ class Home extends Component{
       return (
         <div className="App">
           <header className="App-header">
-          <p><strong><a href="../">Uber/Lyft Cab Pickup Helper</a></strong></p>
+            <p><strong><a href="../">Uber/Lyft Cab Pickup Helper</a></strong></p>
           </header>
           <header className="Search-header">
-          <form onSubmit={this.handleSubmit}>
-          <div class="row">
-            <div class="column1">
-              <div><label>Distance:</label></div>
-              <div><label>Company:</label></div>
-              <div><label>Date:</label></div>
-              <div><label>Destination:</label></div>
-              <div><label>Source:</label></div>
-              <div><label>Price:</label></div>
-              <div><label>Surge Multiplier:</label></div>
-              <div><label>Cab Type:</label></div>
+            <form onSubmit={this.handleSubmit}>
+            <div class="row">
+              <div class="column1">
+                <div><label>Distance:</label></div>
+                <div><label>Company:</label></div>
+                <div><label>Date:</label></div>
+                <div><label>Destination:</label></div>
+                <div><label>Source:</label></div>
+                <div><label>Price:</label></div>
+                <div><label>Surge Multiplier:</label></div>
+                <div><label>Cab Type:</label></div>
+              </div>
+              <div class="column2">
+                <div><input type="text" name="Distance" id="Distance" size="20"
+                  onChange={e => this.setDistance(e)}/></div>
+                <div><select value={this.state.value} onChange={e => this.setCompany(e)} id="select">
+                  <option selected-value=""></option>
+                  <option value="Uber">Uber</option>
+                  <option value="Lyft">Lyft</option>
+                </select></div>
+                <div><DatePicker
+                  showPopperArrow={false}
+                  selected={this.state.startDate}
+                  onChange={this.setTimestamp}
+                  openToDate={new Date("2018/09/28")}/></div>
+                <div><select value={this.state.value} onChange={e => this.setDestination(e)} id="select">
+                  <option selected-value=""></option>
+                  <option value="North Station">North Station</option>
+                  <option value="Haymarket Square">Haymarket Square</option>
+                  <option value="Northeastern University">Northeastern University</option>
+                  <option value="Back Bay">Back Bay</option>
+                  <option value="West End">West End</option>
+                  <option value="North End">North End</option>
+                  <option value="South Station">South Station</option>
+                  <option value="Beacon Hill">Beacon Hill</option>
+                  <option value="Fenway">Fenway</option>
+                  <option value="Theatre District">Theatre District</option>
+                  <option value="Boston University">Boston University</option>
+                  <option value="Financial District">Financial District</option>
+                </select></div>
+                <div><select value={this.state.value} onChange={e => this.setSource(e)} id="select">
+                  <option selected-value=""></option>
+                  <option value="North Station">North Station</option>
+                  <option value="Haymarket Square">Haymarket Square</option>
+                  <option value="Northeastern University">Northeastern University</option>
+                  <option value="Back Bay">Back Bay</option>
+                  <option value="West End">West End</option>
+                  <option value="North End">North End</option>
+                  <option value="South Station">South Station</option>
+                  <option value="Beacon Hill">Beacon Hill</option>
+                  <option value="Fenway">Fenway</option>
+                  <option value="Theatre District">Theatre District</option>
+                  <option value="Boston University">Boston University</option>
+                  <option value="Financial District">Financial District</option>
+                </select></div>
+                <div><input type="text" name="Price" id="Price"
+                  onChange={e => this.setPrice(e)}/></div>
+                <div><select value={this.state.value} onChange={e => this.setSurgeMultiplier(e)} id="select">
+                  <option selected-value=""></option>
+                  <option value="1">1</option>
+                  <option value="1.25">1.25</option>
+                  <option value="1.5">1.5</option>
+                  <option value="1.75">1.75</option>
+                  <option value="2">2</option>
+                  <option value="2.5">2.5</option>
+                  <option value="3">3</option>
+                </select></div>
+                <div><select value={this.state.value} onChange={e => this.setCabType(e)} id="select">
+                  <option selected-value=""></option>
+                  <option value="Black">Black</option>
+                  <option value="Black SUV">Black SUV</option>
+                  <option value="Lux">Lux</option>
+                  <option value="Lux Black">Lux Black</option>
+                  <option value="Lux Black XL">Lux Black XL</option>
+                  <option value="Lyft">Lyft</option>
+                  <option value="Lyft XL">Lyft XL</option>
+                  <option value="Shared">Shared</option>
+                  <option value="Taxi">Taxi</option>
+                  <option value="UberPool">UberPOOL</option>
+                  <option value="UberX">UberX</option>
+                  <option value="UberXL">UberXL</option>
+                  <option value="WAV">WAV</option>
+                </select></div>
+              </div>
             </div>
-            <div class="column2">
-              <div><input type="text" name="Distance" id="Distance" size="20"
-                onChange={e => this.setDistance(e)}/></div>
-              <div><select value={this.state.value} onChange={e => this.setCompany(e)} id="select">
-                <option selected-value=""></option>
-                <option value="Uber">Uber</option>
-                <option value="Lyft">Lyft</option>
-              </select></div>
-              <div><DatePicker
-                showPopperArrow={false}
-                selected={this.state.startDate}
-                onChange={this.setTimestamp}
-                openToDate={new Date("2018/09/28")}/></div>
-              <div><select value={this.state.value} onChange={e => this.setDestination(e)} id="select">
-                <option selected-value=""></option>
-                <option value="North Station">North Station</option>
-                <option value="Haymarket Square">Haymarket Square</option>
-                <option value="Northeastern University">Northeastern University</option>
-                <option value="Back Bay">Back Bay</option>
-                <option value="West End">West End</option>
-                <option value="North End">North End</option>
-                <option value="South Station">South Station</option>
-                <option value="Beacon Hill">Beacon Hill</option>
-                <option value="Fenway">Fenway</option>
-                <option value="Theatre District">Theatre District</option>
-                <option value="Boston University">Boston University</option>
-                <option value="Financial District">Financial District</option>
-              </select></div>
-              <div><select value={this.state.value} onChange={e => this.setSource(e)} id="select">
-                <option selected-value=""></option>
-                <option value="North Station">North Station</option>
-                <option value="Haymarket Square">Haymarket Square</option>
-                <option value="Northeastern University">Northeastern University</option>
-                <option value="Back Bay">Back Bay</option>
-                <option value="West End">West End</option>
-                <option value="North End">North End</option>
-                <option value="South Station">South Station</option>
-                <option value="Beacon Hill">Beacon Hill</option>
-                <option value="Fenway">Fenway</option>
-                <option value="Theatre District">Theatre District</option>
-                <option value="Boston University">Boston University</option>
-                <option value="Financial District">Financial District</option>
-              </select></div>
-              <div><input type="text" name="Price" id="Price"
-                onChange={e => this.setPrice(e)}/></div>
-              <div><select value={this.state.value} onChange={e => this.setSurgeMultiplier(e)} id="select">
-                <option selected-value=""></option>
-                <option value="1">1</option>
-                <option value="1.25">1.25</option>
-                <option value="1.5">1.5</option>
-                <option value="1.75">1.75</option>
-                <option value="2">2</option>
-                <option value="2.5">2.5</option>
-                <option value="3">3</option>
-              </select></div>
-              <div><select value={this.state.value} onChange={e => this.setCabType(e)} id="select">
-                <option selected-value=""></option>
-                <option value="Black">Black</option>
-                <option value="Black SUV">Black SUV</option>
-                <option value="Lux">Lux</option>
-                <option value="Lux Black">Lux Black</option>
-                <option value="Lux Black XL">Lux Black XL</option>
-                <option value="Lyft">Lyft</option>
-                <option value="Lyft XL">Lyft XL</option>
-                <option value="Shared">Shared</option>
-                <option value="Taxi">Taxi</option>
-                <option value="UberPool">UberPOOL</option>
-                <option value="UberX">UberX</option>
-                <option value="UberXL">UberXL</option>
-                <option value="WAV">WAV</option>
-              </select></div>
-            </div>
-          </div>
-          <button onClick={e => this.setState({ post: e.target.value, responseToPost: [] })} value="search" type="submit" class="block-1">Search</button>
-          <button onClick={e => this.setState({ post: e.target.value })} type="submit" value="add" class="block-2">Insert</button>
-          <input class="block-3" type="reset" value="Reset"/>
-          <a href="http://localhost:3000/analyze"><input type="button" value='Analyze' class="block-4"/></a>
-          </form>
+            <button onClick={e => this.setState({ post: e.target.value, responseToPost: [] })} value="search" type="submit" class="block-1">Search</button>
+            <button onClick={e => this.setState({ post: e.target.value })} type="submit" value="add" class="block-2">Insert</button>
+            <input class="block-3" type="reset" value="Reset"/>
+            <a href="http://localhost:3000/analyze"><input type="button" value='Analyze' class="block-4"/></a>
+            </form>
           </header>
           <Popup
             open={this.state.openEdit}
