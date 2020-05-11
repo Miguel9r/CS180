@@ -338,7 +338,7 @@ class Home extends Component{
             </div>
           </div>
           <button onClick={e => this.setState({ post: e.target.value, responseToPost: [] })} value="search" type="submit" class="block-1">Search</button>
-          <button onClick={e => this.setState({ post: e.target.value })} type="submit" value="add" class="block-2">Insert</button>
+          <button onClick={e => this.setState({ post: e.target.value })} type="submit" value="add" class="block-2" data-testid='buttoninsert' itemID="insert">Insert</button>
           <input class="block-3" type="reset" value="Reset"/>
           <a href="http://localhost:3000/analyze"><input type="button" value='Analyze' class="block-4"/></a>
           </form>
