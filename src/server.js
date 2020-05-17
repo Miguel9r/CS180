@@ -64,11 +64,11 @@ readInterface.on('line', function(line) {
     }
   }
   prepareStats();
-  console.log("Time to initialize the server: "+(Date.now()-init_time)+" milliseconds");
   console.log("Total of rows: " + id);
 });
 var uberlyftStat = [];
 var dateStat = [];
+var typesStat = [];
 function prepareStats()
 {
   var count = [];
@@ -126,6 +126,29 @@ function prepareStats()
     dateret.push({Neighbourhood: d.toLocaleDateString('en-US'), Count: dateCount[j]});
   }
   dateStat = dateret;
+  dateStat = dateStat.sort(compare);
+
+  count = [];
+  for(i = 1; i<rows.length; i++)
+  {
+      if(count.length <= type.indexOf(rows[i][7]))
+      {
+        for(t = count.length; t <= type.indexOf(rows[i][7]); t++)
+        {
+          count.push(0);
+        }
+      }
+      count[type.indexOf(rows[i][7])]+=1;
+    
+  }
+  ret = [];
+  for(j = 0;j<type.length;j++)
+  {
+    ret.push({Neighbourhood: type[j], Count: count[j]});
+  }
+  typesStat = ret.sort(compare);
+  
+  console.log("Time to initialize the server: "+(Date.now()-init_time)+" milliseconds");
 }
 
 app.use(bodyParser.json());
@@ -300,46 +323,10 @@ function stats(criteria) {
       }
       return JSON.stringify(ret);
     case 'most_rides':
-      var count = [];
-      for(i = 1; i<rows.length; i++)
-      {
-          if(count.length <= dates.indexOf(Math.floor(rows[i][2]/86400000)))
-          {
-            for(t = count.length; t <= dates.indexOf(Math.floor(rows[i][2]/86400000)); t++)
-            {
-              count.push(0);
-            }
-          }
-          count[dates.indexOf(Math.floor(rows[i][2]/86400000))]+=1;
-        
-      }
-      var ret = [];
-      for(j = 0;j<dates.length;j++)
-      {
-        var d = new Date(dates[j]*86400000);
-        ret.push({Neighbourhood: d.toLocaleDateString('en-US'), Count: count[j]});
-      }
-      return JSON.stringify(ret.sort(compare).slice(0, 10));
+      return JSON.stringify(dateStat.sort(compare).slice(0, 10));
     case 'top-3':
-      var count = [];
-      for(i = 1; i<rows.length; i++)
-      {
-          if(count.length <= type.indexOf(rows[i][7]))
-          {
-            for(t = count.length; t <= type.indexOf(rows[i][7]); t++)
-            {
-              count.push(0);
-            }
-          }
-          count[type.indexOf(rows[i][7])]+=1;
-        
-      }
-      var ret = [];
-      for(j = 0;j<type.length;j++)
-      {
-        ret.push({Neighbourhood: type[j], Count: count[j]});
-      }
-      return JSON.stringify(ret.sort(compare).slice(0, 3));
+      
+      return JSON.stringify(typesStat.sort(compare).slice(0, 3));
     default:
       return '';
     // code block
@@ -364,6 +351,7 @@ function deleteRow(row) {
     if(rows[i][8] === row.delete)
     {
       dateStat[dates.indexOf(Math.floor(rows[i][2]/86400000))].Count--;
+      typesStat[type.indexOf(rows[i][7])].Count--;
       if(rows[i][1] === 'Uber')
       {
         uberlyftStat[neighbourhoods.indexOf(rows[i][4])].UberCount--;
@@ -401,6 +389,7 @@ function updateRow(row) {
     {
       if(object[row.field]==1)
       {
+        
         if(rows[i][object[row.field]] === 'Uber')
         {
           uberlyftStat[neighbourhoods.indexOf(rows[i][4])].UberCount--;
@@ -427,6 +416,10 @@ function updateRow(row) {
           var d = new Date(Math.floor(row.value/86400000)*86400000);
           dateStat.push({Neighbourhood: d.toLocaleDateString('en-Us'), Count: 1});
         }
+      }else if(object[row.field] == 7)
+      {
+        typesStat[type.indexOf(row.value)].Count++;
+        typesStat[type.indexOf(rows[i][7])].Count--;
       }
       rows[i][object[row.field]] = row.value;
       
@@ -467,6 +460,7 @@ function addRow(info) {
     var d = new Date(Math.floor(newRow[2]/86400000)*86400000);
     dateStat.push({Neighbourhood: d.toLocaleDateString('en-Us'), Count: 1});
   }
+  typesStat[type.indexOf(newRow[7])].Count++;
 
   console.log("Inserted the following information: " + newRow);
   writeBlank();
