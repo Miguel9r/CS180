@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 const dbPath = 'data/db.csv';
-
+const init_time = Date.now();
 const readInterface = readline.createInterface({
   input: fs.createReadStream(dbPath),
   output: process.stdout,
@@ -63,10 +63,70 @@ readInterface.on('line', function(line) {
       type.push(rows[i][7]);
     }
   }
-  
+  prepareStats();
+  console.log("Time to initialize the server: "+(Date.now()-init_time)+" milliseconds");
   console.log("Total of rows: " + id);
 });
+var uberlyftStat = [];
+var dateStat = [];
+function prepareStats()
+{
+  var count = [];
+  var lyftcount = [];
+  for(i = 1; i<rows.length; i++)
+  {
+    if(rows[i][1] == 'Uber')
+    {
+      if(count.length <= neighbourhoods.indexOf(rows[i][4]))
+      {
+        for(t = count.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
+        {
+          count.push(0);
+        }
+      }
+      count[neighbourhoods.indexOf(rows[i][4])]+=1;
+    }
+    if(rows[i][1] == 'Lyft')
+    {
+      if(lyftcount.length <= neighbourhoods.indexOf(rows[i][4]))
+      {
+        for(t = lyftcount.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
+        {
+          lyftcount.push(0);
+        }
+      }
+      lyftcount[neighbourhoods.indexOf(rows[i][4])]+=1;
+    }
+  }
+  var ret = [];
+  for(j = 0;j<neighbourhoods.length;j++)
+  {
+    ret.push({Neighbourhood: neighbourhoods[j], Count: count[j]+lyftcount[j], UberCount: count[j], LyftCount: lyftcount[j]});
+  }
+  uberlyftStat = ret;
 
+
+  var dateCount = [];
+  for(j = 1; j<rows.length; j++)
+  {
+      if(dateCount.length <= dates.indexOf(Math.floor(rows[j][2]/86400000)))
+      {
+        for(t = dateCount.length; t <= dates.indexOf(Math.floor(rows[j][2]/86400000)); t++)
+        {
+          dateCount.push(0);
+        }
+      }
+      dateCount[dates.indexOf(Math.floor(rows[j][2]/86400000))]+=1;
+    
+  }
+  var dateret = [];
+  for(j = 0;j<dates.length;j++)
+  {
+    var d = new Date(dates[j]*86400000);
+    dateret.push({Neighbourhood: d.toLocaleDateString('en-US'), Count: dateCount[j]});
+  }
+  dateStat = dateret;
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -81,6 +141,7 @@ app.post('/api/query', (req, res) => {
   res.send(
     search(req.body),
   );
+  
 });
 
 app.post('/api/delete', (req, res) => {
@@ -99,9 +160,11 @@ app.post('/api/update', (req, res) => {
 });
 app.post('/api/stats', (req, res) => {
   console.log(req.body);
+  const stat_time = Date.now();
   res.send(
     stats(req.body),
   );
+  console.log("Time to get stat reply: "+(Date.now()-stat_time)+" milliseconds");
 });
 
 app.post('/api/insert', (req, res) => { // used for calling the addRow function
@@ -167,38 +230,11 @@ function stats(criteria) {
       }
       return JSON.stringify(ret);
     case 'NeighbourhoodUber':
-      var count = [];
-      var lyftcount = [];
-      for(i = 1; i<rows.length; i++)
+      ret = []
+      for(j = 0;j<uberlyftStat.length;j++)
       {
-        if(rows[i][1] == 'Uber')
-        {
-          if(count.length <= neighbourhoods.indexOf(rows[i][4]))
-          {
-            for(t = count.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
-            {
-              count.push(0);
-            }
-          }
-          count[neighbourhoods.indexOf(rows[i][4])]+=1;
-        }
-        if(rows[i][1] == 'Lyft')
-        {
-          if(lyftcount.length <= neighbourhoods.indexOf(rows[i][4]))
-          {
-            for(t = lyftcount.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
-            {
-              lyftcount.push(0);
-            }
-          }
-          lyftcount[neighbourhoods.indexOf(rows[i][4])]+=1;
-        }
-      }
-      var ret = [];
-      for(j = 0;j<neighbourhoods.length;j++)
-      {
-        if(count[j]>lyftcount[j])
-        {ret.push({Neighbourhood: neighbourhoods[j], Count: count[j]+lyftcount[j], UberCount: count[j], LyftCount: lyftcount[j]});}
+        if(uberlyftStat[j].UberCount>uberlyftStat[j].LyftCount)
+        {ret.push(uberlyftStat[j]);}
       }
       console.log("Number of results: " + ret.length);
       if (ret.length == 0) {
@@ -207,38 +243,11 @@ function stats(criteria) {
       }
       return JSON.stringify(ret);
     case 'NeighbourhoodLyft':
-      var count = [];
-      var lyftcount = [];
-      for(i = 1; i<rows.length; i++)
+      ret = []
+      for(j = 0;j<uberlyftStat.length;j++)
       {
-        if(rows[i][1] == 'Uber')
-        {
-          if(count.length <= neighbourhoods.indexOf(rows[i][4]))
-          {
-            for(t = count.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
-            {
-              count.push(0);
-            }
-          }
-          count[neighbourhoods.indexOf(rows[i][4])]+=1;
-        }
-        if(rows[i][1] == 'Lyft')
-        {
-          if(lyftcount.length <= neighbourhoods.indexOf(rows[i][4]))
-          {
-            for(t = lyftcount.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
-            {
-              lyftcount.push(0);
-            }
-          }
-          lyftcount[neighbourhoods.indexOf(rows[i][4])]+=1;
-        }
-      }
-      var ret = [];
-      for(j = 0;j<neighbourhoods.length;j++)
-      {
-        if(count[j]<lyftcount[j])
-        {ret.push({Neighbourhood: neighbourhoods[j], Count: count[j]+lyftcount[j], UberCount: count[j], LyftCount: lyftcount[j]});}
+        if(uberlyftStat[j].LyftCount>uberlyftStat[j].UberCount)
+        {ret.push(uberlyftStat[j]);}
       }
       console.log("Number of results: " + ret.length);
       if (ret.length == 0) {
@@ -354,6 +363,14 @@ function deleteRow(row) {
   {
     if(rows[i][8] === row.delete)
     {
+      dateStat[dates.indexOf(Math.floor(rows[i][2]/86400000))].Count--;
+      if(rows[i][1] === 'Uber')
+      {
+        uberlyftStat[neighbourhoods.indexOf(rows[i][4])].UberCount--;
+      }else if(rows[i][1] === 'Lyft')
+      {
+        uberlyftStat[neighbourhoods.indexOf(rows[i][4])].LyftCount--;
+      }
       rows.splice(i, 1);
       break;
     }
@@ -382,7 +399,37 @@ function updateRow(row) {
     };
     if(rows[i][8] === row.update.Id)
     {
+      if(object[row.field]==1)
+      {
+        if(rows[i][object[row.field]] === 'Uber')
+        {
+          uberlyftStat[neighbourhoods.indexOf(rows[i][4])].UberCount--;
+        }else if(rows[i][object[row.field]] === 'Lyft')
+        {
+          uberlyftStat[neighbourhoods.indexOf(rows[i][4])].LyftCount--;
+        }
+      
+        if(row.value === 'Uber')
+        {
+          uberlyftStat[neighbourhoods.indexOf(rows[i][4])].UberCount++;
+        }else if(row.value === 'Lyft')
+        {
+          uberlyftStat[neighbourhoods.indexOf(rows[i][4])].LyftCount++;
+        }
+      }else if(object[row.field] == 2)
+      {
+        dateStat[dates.indexOf(Math.floor(rows[i][object[row.field]]/86400000))].Count--;
+        if(dates.includes(Math.floor(row.value/86400000)))
+        {
+          dateStat[dates.indexOf(Math.floor(row.value/86400000))].Count++;
+        }else{
+          dates.push(Math.floor(row.value/86400000));
+          var d = new Date(Math.floor(row.value/86400000)*86400000);
+          dateStat.push({Neighbourhood: d.toLocaleDateString('en-Us'), Count: 1});
+        }
+      }
       rows[i][object[row.field]] = row.value;
+      
       break;
     }
   }
@@ -403,6 +450,23 @@ function addRow(info) {
   newRow.push(id);
   id++;
   rows.push(newRow);
+  if(newRow[1] === 'Uber')
+  {
+    uberlyftStat[neighbourhoods.indexOf(newRow[4])].UberCount++;
+    uberlyftStat[neighbourhoods.indexOf(newRow[4])].Count++;
+  }else if(newRow[1] === 'Lyft')
+  {
+    uberlyftStat[neighbourhoods.indexOf(newRow[4])].LyftCount++;
+    uberlyftStat[neighbourhoods.indexOf(newRow[4])].Count++;
+  }
+  if(dates.includes(Math.floor(newRow[2]/86400000)))
+  {
+    dateStat[dates.indexOf(Math.floor(newRow[2]/86400000))].Count++;
+  }else{
+    dates.push(Math.floor(newRow[2]/86400000));
+    var d = new Date(Math.floor(newRow[2]/86400000)*86400000);
+    dateStat.push({Neighbourhood: d.toLocaleDateString('en-Us'), Count: 1});
+  }
 
   console.log("Inserted the following information: " + newRow);
   writeBlank();

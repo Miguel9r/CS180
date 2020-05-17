@@ -90,7 +90,7 @@ class Analyze extends Component{
       return 0;
     }
     renderTableData() {
-      if(this.state.lastStat == "top-3"||this.state.lastStat == "most_rides"||this.state.lastStat == "NeighbourhoodPickup"||this.state.lastStat == "NeighbourhoodDropoff"||this.state.lastStat == "start_point"||this.state.lastStat == "end_point")
+      if(this.state.lastStat === "top-3"||this.state.lastStat === "most_rides"||this.state.lastStat === "NeighbourhoodPickup"||this.state.lastStat === "NeighbourhoodDropoff"||this.state.lastStat === "start_point"||this.state.lastStat === "end_point")
      {
       return this.state.responseToPost.sort(this.compare).map((ride, index) => {
          const { Neighbourhood,
@@ -103,7 +103,7 @@ class Analyze extends Component{
             </tr>
          )
       })
-    }else if(this.state.lastStat == "NeighbourhoodUber"||this.state.lastStat == "NeighbourhoodLyft")
+    }else if(this.state.lastStat === "NeighbourhoodUber"||this.state.lastStat === "NeighbourhoodLyft")
     {
      return this.state.responseToPost.sort(this.compare).map((ride, index) => {
         const { Neighbourhood,
@@ -123,7 +123,7 @@ class Analyze extends Component{
    }
    }
    renderOption() {
-     if(this.state.query.Stat == "NeighbourhoodPickup"||this.state.query.Stat == "NeighbourhoodDropoff")
+     if(this.state.query.Stat === "NeighbourhoodPickup"||this.state.query.Stat === "NeighbourhoodDropoff")
      {
       return (
         <div><DatePicker
@@ -134,7 +134,7 @@ class Analyze extends Component{
         </div>
       )
      }
-     if(this.state.query.Stat == "start_point"||this.state.query.Stat == "end_point")
+     if(this.state.query.Stat === "start_point"||this.state.query.Stat === "end_point")
      {
       return (
         <div><select value={this.state.value} onChange={e => this.setTime(e)}>
@@ -168,13 +168,13 @@ class Analyze extends Component{
      }
  }
  renderLabel() {
-  if(this.state.query.Stat == "NeighbourhoodPickup"||this.state.query.Stat == "NeighbourhoodDropoff")
+  if(this.state.query.Stat === "NeighbourhoodPickup"||this.state.query.Stat === "NeighbourhoodDropoff")
   {
    return (
     <div><label>Input Date:</label></div>
    )
   }
-  if(this.state.query.Stat == "start_point"||this.state.query.Stat == "end_point")
+  if(this.state.query.Stat === "start_point"||this.state.query.Stat === "end_point")
   {
    return (
     <div><label>Input Hour:</label></div>
@@ -182,7 +182,7 @@ class Analyze extends Component{
   }
 }
 renderTable() {
-  if(this.state.lastStat == "NeighbourhoodPickup"||this.state.lastStat == "NeighbourhoodDropoff")
+  if(this.state.lastStat === "NeighbourhoodPickup"||this.state.lastStat === "NeighbourhoodDropoff")
   {
    return (
     <table id='results'>
@@ -193,7 +193,7 @@ renderTable() {
             </tbody>
           </table>
    )
-  }else if(this.state.lastStat == "NeighbourhoodUber"||this.state.lastStat == "NeighbourhoodLyft")
+  }else if(this.state.lastStat === "NeighbourhoodUber"||this.state.lastStat === "NeighbourhoodLyft")
   {
    return (
     <table id='results'>
@@ -207,7 +207,7 @@ renderTable() {
           </table>
    )
   }
-  else if(this.state.lastStat == "start_point"||this.state.lastStat == "end_point")
+  else if(this.state.lastStat === "start_point"||this.state.lastStat === "end_point")
   {
    return (
     <table id='results'>
@@ -218,7 +218,7 @@ renderTable() {
             </tbody>
           </table>
    )
-  }else if(this.state.lastStat == "most_rides")
+  }else if(this.state.lastStat === "most_rides")
   {
     return (
       <table id='results'>
@@ -229,7 +229,7 @@ renderTable() {
               </tbody>
             </table>
      )
-  }else if(this.state.lastStat == "top-3")
+  }else if(this.state.lastStat === "top-3")
   {
     return (
       <table id='results'>
