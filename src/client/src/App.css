@@ -2,27 +2,45 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+header {
+  background: #23074d;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #cc5333, #23074d);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #cc5333, #23074d); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color: white;
+}
+
+.home-header {
+  display: flex;
+  flex-direction: column;
+  font-size: calc(20px + 3vmin);
+  padding: 100px;
+}
+
+.home-header2 {
+  display: flex;
+  flex-direction: column;
+  font-size: calc(12px + 1vmin);
+  padding: 100px;
+  padding-bottom: 239px;
 }
 
 .App-header {
-  background-color: #E5D007;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  font-size: calc(10px + 2vmin);
-  color: black;
-  padding-bottom: 10px;
+  font-size: calc(20px + 2vmin);
+}
+
+.Insert-header {
+  display: flex;
+  justify-content: center;
+  font-size: calc(12px + 1vmin);
+  color: white;
 }
 
 .Search-header {
-  padding-top: 20px;
-  background-color: rgb(73, 73, 73);
   display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(12px + 1vmin);
   color: white;
   padding-bottom: 30px;
 }
@@ -102,12 +120,8 @@ a {
   padding-bottom: 5px;
 }
 
-.date2 {
-  width: 175px;
-}
-
 #select {
-  width: 175px;
+  width: 172px;
 }
 
 /* Clear floats after the columns */
