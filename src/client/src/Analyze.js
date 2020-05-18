@@ -81,12 +81,15 @@ class Analyze extends Component{
 
           this.setState({ responseToPost: JSON.parse(body) });
         }
+        else {
+          alert("Please choose an option from the dropdown menu...");
+        }
       }
     };
     compare(a, b) {
       if (a.Count > b.Count) return -1;
       if (b.Count > a.Count) return 1;
-    
+
       return 0;
     }
     renderTableData() {
@@ -122,66 +125,66 @@ class Analyze extends Component{
      })
    }
    }
-   renderOption() {
-     if(this.state.query.Stat === "NeighbourhoodPickup"||this.state.query.Stat === "NeighbourhoodDropoff")
-     {
-      return (
-        <div><DatePicker
-                showPopperArrow={false}
-                selected={this.state.startDate}
-                onChange={this.setTimestamp}
-                openToDate={new Date("2018/09/28")}/>
-        </div>
-      )
-     }
-     if(this.state.query.Stat === "start_point"||this.state.query.Stat === "end_point")
-     {
-      return (
-        <div><select value={this.state.value} onChange={e => this.setTime(e)}>
-                <option selected-value=""></option>
-                <option value="0">0:00</option>
-                <option value="1">1:00</option>
-                <option value="2">2:00</option>
-                <option value="3">3:00</option>
-                <option value="4">4:00</option>
-                <option value="5">5:00</option>
-                <option value="6">6:00</option>
-                <option value="7">7:00</option>
-                <option value="8">8:00</option>
-                <option value="9">9:00</option>
-                <option value="10">10:00</option>
-                <option value="11">11:00</option>
-                <option value="12">12:00</option>
-                <option value="13">13:00</option>
-                <option value="14">14:00</option>
-                <option value="15">15:00</option>
-                <option value="16">16:00</option>
-                <option value="17">17:00</option>
-                <option value="18">18:00</option>
-                <option value="19">19:00</option>
-                <option value="20">20:00</option>
-                <option value="21">21:00</option>
-                <option value="22">22:00</option>
-                <option value="23">23:00</option>
-              </select></div>
-      )
-     }
- }
- renderLabel() {
-  if(this.state.query.Stat === "NeighbourhoodPickup"||this.state.query.Stat === "NeighbourhoodDropoff")
-  {
-   return (
-    <div><label>Input Date:</label></div>
-   )
+    renderOption() {
+       if(this.state.query.Stat === "NeighbourhoodPickup"||this.state.query.Stat === "NeighbourhoodDropoff")
+       {
+        return (
+          <div><DatePicker
+                  showPopperArrow={false}
+                  selected={this.state.startDate}
+                  onChange={this.setTimestamp}
+                  openToDate={new Date("2018/09/28")}/>
+          </div>
+        )
+       }
+       if(this.state.query.Stat === "start_point"||this.state.query.Stat === "end_point")
+       {
+        return (
+          <div><select value={this.state.value} onChange={e => this.setTime(e)}>
+                  <option selected-value=""></option>
+                  <option value="0">0:00</option>
+                  <option value="1">1:00</option>
+                  <option value="2">2:00</option>
+                  <option value="3">3:00</option>
+                  <option value="4">4:00</option>
+                  <option value="5">5:00</option>
+                  <option value="6">6:00</option>
+                  <option value="7">7:00</option>
+                  <option value="8">8:00</option>
+                  <option value="9">9:00</option>
+                  <option value="10">10:00</option>
+                  <option value="11">11:00</option>
+                  <option value="12">12:00</option>
+                  <option value="13">13:00</option>
+                  <option value="14">14:00</option>
+                  <option value="15">15:00</option>
+                  <option value="16">16:00</option>
+                  <option value="17">17:00</option>
+                  <option value="18">18:00</option>
+                  <option value="19">19:00</option>
+                  <option value="20">20:00</option>
+                  <option value="21">21:00</option>
+                  <option value="22">22:00</option>
+                  <option value="23">23:00</option>
+                </select></div>
+        )
+       }
+   }
+    renderLabel() {
+    if(this.state.query.Stat === "NeighbourhoodPickup"||this.state.query.Stat === "NeighbourhoodDropoff")
+    {
+     return (
+      <div><label>Input Date:</label></div>
+     )
+    }
+    if(this.state.query.Stat === "start_point"||this.state.query.Stat === "end_point")
+    {
+     return (
+      <div><label>Input Hour:</label></div>
+     )
+    }
   }
-  if(this.state.query.Stat === "start_point"||this.state.query.Stat === "end_point")
-  {
-   return (
-    <div><label>Input Hour:</label></div>
-   )
-  }
-}
-renderTable() {
+    renderTable() {
   if(this.state.lastStat === "NeighbourhoodPickup"||this.state.lastStat === "NeighbourhoodDropoff")
   {
    return (
@@ -247,7 +250,10 @@ renderTable() {
       return (
         <div className="App">
           <header className="App-header">
-          <p><strong><a href="../">Uber/Lyft Cab Pickup Helper</a></strong></p>
+            <p><strong><a href="../">Analytics</a></strong></p>
+          </header>
+          <header className="Insert-header">
+          <p>Please choose one of the options from the dropdown menu.</p>
           </header>
           <header className="Search-header">
           <form onSubmit={this.handleSubmit}>
@@ -278,7 +284,7 @@ renderTable() {
           </form>
           </header>
             {this.renderTable()}
-            
+
         </div>
       );
     }
