@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 const dbPath = 'data/db.csv';
-
+const init_time = Date.now();
 const readInterface = readline.createInterface({
   input: fs.createReadStream(dbPath),
   output: process.stdout,
@@ -63,7 +63,7 @@ readInterface.on('line', function(line) {
       type.push(rows[i][7]);
     }
   }
-  
+  console.log("Time to initialize the server: "+(Date.now()-init_time)+" milliseconds");
   console.log("Total of rows: " + id);
 });
 
@@ -81,6 +81,7 @@ app.post('/api/query', (req, res) => {
   res.send(
     search(req.body),
   );
+  
 });
 
 app.post('/api/delete', (req, res) => {
@@ -99,9 +100,11 @@ app.post('/api/update', (req, res) => {
 });
 app.post('/api/stats', (req, res) => {
   console.log(req.body);
+  const stat_time = Date.now();
   res.send(
     stats(req.body),
   );
+  console.log("Time to get stat reply: "+(Date.now()-stat_time)+" milliseconds");
 });
 
 app.post('/api/insert', (req, res) => { // used for calling the addRow function
