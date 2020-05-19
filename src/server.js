@@ -63,10 +63,7 @@ readInterface.on('line', function(line) {
       type.push(rows[i][7]);
     }
   }
-<<<<<<< HEAD
   prepareStats();
-=======
->>>>>>> origin/master
   console.log("Total of rows: " + id);
 });
 var uberlyftStat = [];
