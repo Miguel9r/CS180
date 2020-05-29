@@ -473,11 +473,11 @@ function addRow(info) {
 function search(criteria) {
   var query = criteria;
   for (y in query) {
-    if(y == 'Distance' && isNaN(query[y]))  // Validation checks
+    if(y == 'Distance' && isNaN(query[y][0]))  // Validation checks
     {
       console.log("Error: The Distance has to be an integer.  Setting it to null as Default.");
     }
-    else if(y == 'Price' && isNaN(query[y]))
+    else if(y == 'Price' && isNaN(query[y][0]))
     {
       console.log("Error: The Price has to be an integer.  Setting it to null as Default.");
     }
@@ -491,7 +491,7 @@ function search(criteria) {
   var show = true;
   for(x in query)
   {
-    if(query[x] != null)
+    if((!Array.isArray(query[x]) && query[x] != null) || ((Array.isArray(query[x]) && query[x][0] != null)))
     {
       valid = true;
     }
@@ -506,11 +506,29 @@ function search(criteria) {
     var j = 0;
     for(x in query)
     {
-      if(x == 'Timestamp')
+      if(x === 'Timestamp')
       {
-        if(query[x] != null && !(rows[i][j] >= query[x] && rows[i][j] < (query[x]+86400000)))
+        if(query[x][0] != null)
         {
-          add = false;
+          if(query[x][1] != null && !(rows[i][j] >= query[x][0] && rows[i][j] < (query[x][1]+86400000)))
+          {
+            add = false;
+          }else if(query[x][1] == null && !(rows[i][j] >= query[x][0] && rows[i][j] < (query[x][0]+86400000)))
+          {
+            add = false;
+          }
+        }
+      }else if(x === 'Distance' || x === 'Price')
+      {
+        if(query[x][0] != null)
+        {
+          if(query[x][1] != null && !(rows[i][j] >= query[x][0] && rows[i][j] < query[x][1]))
+          {
+            add = false;
+          }else if(query[x][1] == null && !(rows[i][j] === query[x][0]))
+          {
+            add = false;
+          }
         }
       }
       else{

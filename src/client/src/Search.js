@@ -10,12 +10,12 @@ class Search extends Component{
       post: '',
       responseToPost: [],
       query: {
-        Distance: null,
+        Distance: [null, null],
         Company: null,
-        Timestamp: null,
+        Timestamp: [null, null],
         Destination: null,
         Source: null,
-        Price: null,
+        Price: [null, null],
         SurgeMultiplier: null,
         CabType: null
       },
@@ -24,13 +24,22 @@ class Search extends Component{
       editField: null,
       editRow: null,
       editValue: null,
-      startDate: null
+      startDate: null,
+      endDate: null,
     };
     setDistance(e){
       const val = e.target.value===""?null:e.target.value;
       this.setState(prev => {
         let query = { ...prev.query };  // creating copy of state variable jasper
-        query.Distance = val;                     // update the name property, assign a new value
+        query.Distance[0] = val;                     // update the name property, assign a new value
+        return { query };
+        })
+    }
+    setDistance2(e){
+      const val = e.target.value===""?null:e.target.value;
+      this.setState(prev => {
+        let query = { ...prev.query };  // creating copy of state variable jasper
+        query.Distance[1] = val;                     // update the name property, assign a new value
         return { query };
         })
     }
@@ -47,7 +56,16 @@ class Search extends Component{
       this.setState({startDate: date});
       this.setState(prev => {
         let query = { ...prev.query };  // creating copy of state variable jasper
-        query.Timestamp = val;               // update the name property, assign a new value
+        query.Timestamp[0] = val;               // update the name property, assign a new value
+        return { query };
+        })
+    }
+    setTimestamp2 = date => {
+      const val = date==null?null:date.getTime();
+      this.setState({endDate: date});
+      this.setState(prev => {
+        let query = { ...prev.query };  // creating copy of state variable jasper
+        query.Timestamp[1] = val;               // update the name property, assign a new value
         return { query };
         })
     }
@@ -71,7 +89,15 @@ class Search extends Component{
       const val = e.target.value===""?null:e.target.value;
       this.setState(prev => {
         let query = { ...prev.query };  // creating copy of state variable jasper
-        query.Price = val;                     // update the name property, assign a new value
+        query.Price[0] = val;                     // update the name property, assign a new value
+        return { query };
+        })
+    }
+    setPrice2(e){
+      const val = e.target.value===""?null:e.target.value;
+      this.setState(prev => {
+        let query = { ...prev.query };  // creating copy of state variable jasper
+        query.Price[1] = val;                     // update the name property, assign a new value
         return { query };
         })
     }
@@ -118,11 +144,11 @@ class Search extends Component{
       console.log(this.state.query);
       for(var k in this.state.query)  // used for validation checking
       {
-        if(k === 'Distance' && isNaN(this.state.query[k]))
+        if(k === 'Distance' && isNaN(this.state.query[k][0]))
         {
           alert("Distance must be an integer/decimal. Searching with a null value for Distance...");
         }
-        else if(k === 'Price' && isNaN(this.state.query[k]))
+        else if(k === 'Price' && isNaN(this.state.query[k][0]))
         {
           alert("Price must be an integer/decimal. Searching with a null value for Price...");
         }
@@ -236,7 +262,10 @@ class Search extends Component{
               </div>
               <div class="column2">
                 <div><input type="text" name="Distance" id="Distance" size="20"
-                  onChange={e => this.setDistance(e)}/></div>
+                  onChange={e => this.setDistance(e)}/>
+                  &nbsp;&nbsp;to&nbsp;&nbsp;
+                  <input type="text" name="Distance" id="Distance" size="20"
+                  onChange={e => this.setDistance2(e)}/></div>
                 <div><select value={this.state.value} onChange={e => this.setCompany(e)} id="select">
                   <option selected-value=""></option>
                   <option value="Uber">Uber</option>
@@ -247,6 +276,12 @@ class Search extends Component{
                   showPopperArrow={false}
                   selected={this.state.startDate}
                   onChange={this.setTimestamp}
+                  openToDate={new Date("2018/09/28")}/>
+                  &nbsp;&nbsp;to&nbsp;&nbsp;
+                  <DatePicker
+                  showPopperArrow={false}
+                  selected={this.state.endDate}
+                  onChange={this.setTimestamp2}
                   openToDate={new Date("2018/09/28")}/>
                 </div>
                 <div><select value={this.state.value} onChange={e => this.setDestination(e)} id="select">
@@ -279,7 +314,11 @@ class Search extends Component{
                   <option value="Boston University">Boston University</option>
                   <option value="Financial District">Financial District</option>
                 </select></div>
-                <div><input type="text" name="Price" id="Price" onChange={e => this.setPrice(e)}/></div>
+                <div>
+                  <input type="text" name="Price" id="Price" onChange={e => this.setPrice(e)}/>
+                  &nbsp;&nbsp;to&nbsp;&nbsp;
+                  <input type="text" name="Price" id="Price" onChange={e => this.setPrice2(e)}/>
+                </div>
                 <div><select value={this.state.value} onChange={e => this.setSurgeMultiplier(e)} id="select">
                   <option selected-value=""></option>
                   <option value="1">1</option>
