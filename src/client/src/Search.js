@@ -144,13 +144,23 @@ class Search extends Component{
       console.log(this.state.query);
       for(var k in this.state.query)  // used for validation checking
       {
-        if(k === 'Distance' && isNaN(this.state.query[k][0]))
+        if(k === 'Distance' && (isNaN(this.state.query[k][0]) || (this.state.query[k][1] != null && isNaN(this.state.query[k][1])) || (this.state.query[k][1] != null && this.state.query[k][1]<this.state.query[k][0])))
         {
           alert("Distance must be an integer/decimal. Searching with a null value for Distance...");
+          this.setState(prev => {
+            let query = { ...prev.query };  // creating copy of state variable jasper
+            query.Distance = [null, null];                     // update the name property, assign a new value
+            return { query };
+            })
         }
-        else if(k === 'Price' && isNaN(this.state.query[k][0]))
+        else if(k === 'Price' && (isNaN(this.state.query[k][0]) || (this.state.query[k][1] != null && isNaN(this.state.query[k][1])) || (this.state.query[k][1] != null && this.state.query[k][1]<this.state.query[k][0])))
         {
           alert("Price must be an integer/decimal. Searching with a null value for Price...");
+          this.setState(prev => {
+            let query = { ...prev.query };  // creating copy of state variable jasper
+            query.Price = [null, null];                     // update the name property, assign a new value
+            return { query };
+            })
         }
       }
       if(this.state.post === 'search'){
