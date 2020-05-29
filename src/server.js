@@ -63,10 +63,93 @@ readInterface.on('line', function(line) {
       type.push(rows[i][7]);
     }
   }
-  console.log("Time to initialize the server: "+(Date.now()-init_time)+" milliseconds");
+  prepareStats();
   console.log("Total of rows: " + id);
 });
+var uberlyftStat = [];
+var dateStat = [];
+var typesStat = [];
+function prepareStats()
+{
+  var count = [];
+  var lyftcount = [];
+  for(i = 1; i<rows.length; i++)
+  {
+    if(rows[i][1] == 'Uber')
+    {
+      if(count.length <= neighbourhoods.indexOf(rows[i][4]))
+      {
+        for(t = count.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
+        {
+          count.push(0);
+        }
+      }
+      count[neighbourhoods.indexOf(rows[i][4])]+=1;
+    }
+    if(rows[i][1] == 'Lyft')
+    {
+      if(lyftcount.length <= neighbourhoods.indexOf(rows[i][4]))
+      {
+        for(t = lyftcount.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
+        {
+          lyftcount.push(0);
+        }
+      }
+      lyftcount[neighbourhoods.indexOf(rows[i][4])]+=1;
+    }
+  }
+  var ret = [];
+  for(j = 0;j<neighbourhoods.length;j++)
+  {
+    ret.push({Neighbourhood: neighbourhoods[j], Count: count[j]+lyftcount[j], UberCount: count[j], LyftCount: lyftcount[j]});
+  }
+  uberlyftStat = ret;
 
+
+  var dateCount = [];
+  for(j = 1; j<rows.length; j++)
+  {
+      if(dateCount.length <= dates.indexOf(Math.floor(rows[j][2]/86400000)))
+      {
+        for(t = dateCount.length; t <= dates.indexOf(Math.floor(rows[j][2]/86400000)); t++)
+        {
+          dateCount.push(0);
+        }
+      }
+      dateCount[dates.indexOf(Math.floor(rows[j][2]/86400000))]+=1;
+    
+  }
+  var dateret = [];
+  for(j = 0;j<dates.length;j++)
+  {
+    var d = new Date(dates[j]*86400000);
+    dateret.push({Neighbourhood: d.toLocaleDateString('en-US'), Count: dateCount[j]});
+  }
+  dateStat = dateret;
+  dateStat = dateStat.sort(compare);
+
+  count = [];
+  for(i = 1; i<rows.length; i++)
+  {
+      if(count.length <= type.indexOf(rows[i][7]))
+      {
+        for(t = count.length; t <= type.indexOf(rows[i][7]); t++)
+        {
+          count.push(0);
+        }
+      }
+      count[type.indexOf(rows[i][7])]+=1;
+    
+  }
+  ret = [];
+  for(j = 0;j<type.length;j++)
+  {
+    ret.push({Neighbourhood: type[j], Count: count[j]});
+  }
+  typesStat = ret.sort(compare);
+  
+  console.log("Time to initialize the server: "+(Date.now()-init_time)+" milliseconds");
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -170,38 +253,11 @@ function stats(criteria) {
       }
       return JSON.stringify(ret);
     case 'NeighbourhoodUber':
-      var count = [];
-      var lyftcount = [];
-      for(i = 1; i<rows.length; i++)
+      ret = []
+      for(j = 0;j<uberlyftStat.length;j++)
       {
-        if(rows[i][1] == 'Uber')
-        {
-          if(count.length <= neighbourhoods.indexOf(rows[i][4]))
-          {
-            for(t = count.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
-            {
-              count.push(0);
-            }
-          }
-          count[neighbourhoods.indexOf(rows[i][4])]+=1;
-        }
-        if(rows[i][1] == 'Lyft')
-        {
-          if(lyftcount.length <= neighbourhoods.indexOf(rows[i][4]))
-          {
-            for(t = lyftcount.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
-            {
-              lyftcount.push(0);
-            }
-          }
-          lyftcount[neighbourhoods.indexOf(rows[i][4])]+=1;
-        }
-      }
-      var ret = [];
-      for(j = 0;j<neighbourhoods.length;j++)
-      {
-        if(count[j]>lyftcount[j])
-        {ret.push({Neighbourhood: neighbourhoods[j], Count: count[j]+lyftcount[j], UberCount: count[j], LyftCount: lyftcount[j]});}
+        if(uberlyftStat[j].UberCount>uberlyftStat[j].LyftCount)
+        {ret.push(uberlyftStat[j]);}
       }
       console.log("Number of results: " + ret.length);
       if (ret.length == 0) {
@@ -210,38 +266,11 @@ function stats(criteria) {
       }
       return JSON.stringify(ret);
     case 'NeighbourhoodLyft':
-      var count = [];
-      var lyftcount = [];
-      for(i = 1; i<rows.length; i++)
+      ret = []
+      for(j = 0;j<uberlyftStat.length;j++)
       {
-        if(rows[i][1] == 'Uber')
-        {
-          if(count.length <= neighbourhoods.indexOf(rows[i][4]))
-          {
-            for(t = count.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
-            {
-              count.push(0);
-            }
-          }
-          count[neighbourhoods.indexOf(rows[i][4])]+=1;
-        }
-        if(rows[i][1] == 'Lyft')
-        {
-          if(lyftcount.length <= neighbourhoods.indexOf(rows[i][4]))
-          {
-            for(t = lyftcount.length; t <= neighbourhoods.indexOf(rows[i][4]); t++)
-            {
-              lyftcount.push(0);
-            }
-          }
-          lyftcount[neighbourhoods.indexOf(rows[i][4])]+=1;
-        }
-      }
-      var ret = [];
-      for(j = 0;j<neighbourhoods.length;j++)
-      {
-        if(count[j]<lyftcount[j])
-        {ret.push({Neighbourhood: neighbourhoods[j], Count: count[j]+lyftcount[j], UberCount: count[j], LyftCount: lyftcount[j]});}
+        if(uberlyftStat[j].LyftCount>uberlyftStat[j].UberCount)
+        {ret.push(uberlyftStat[j]);}
       }
       console.log("Number of results: " + ret.length);
       if (ret.length == 0) {
@@ -294,46 +323,10 @@ function stats(criteria) {
       }
       return JSON.stringify(ret);
     case 'most_rides':
-      var count = [];
-      for(i = 1; i<rows.length; i++)
-      {
-          if(count.length <= dates.indexOf(Math.floor(rows[i][2]/86400000)))
-          {
-            for(t = count.length; t <= dates.indexOf(Math.floor(rows[i][2]/86400000)); t++)
-            {
-              count.push(0);
-            }
-          }
-          count[dates.indexOf(Math.floor(rows[i][2]/86400000))]+=1;
-        
-      }
-      var ret = [];
-      for(j = 0;j<dates.length;j++)
-      {
-        var d = new Date(dates[j]*86400000);
-        ret.push({Neighbourhood: d.toLocaleDateString('en-US'), Count: count[j]});
-      }
-      return JSON.stringify(ret.sort(compare).slice(0, 10));
+      return JSON.stringify(dateStat.sort(compare).slice(0, 10));
     case 'top-3':
-      var count = [];
-      for(i = 1; i<rows.length; i++)
-      {
-          if(count.length <= type.indexOf(rows[i][7]))
-          {
-            for(t = count.length; t <= type.indexOf(rows[i][7]); t++)
-            {
-              count.push(0);
-            }
-          }
-          count[type.indexOf(rows[i][7])]+=1;
-        
-      }
-      var ret = [];
-      for(j = 0;j<type.length;j++)
-      {
-        ret.push({Neighbourhood: type[j], Count: count[j]});
-      }
-      return JSON.stringify(ret.sort(compare).slice(0, 3));
+      
+      return JSON.stringify(typesStat.sort(compare).slice(0, 3));
     default:
       return '';
     // code block
@@ -357,6 +350,15 @@ function deleteRow(row) {
   {
     if(rows[i][8] === row.delete)
     {
+      dateStat[dates.indexOf(Math.floor(rows[i][2]/86400000))].Count--;
+      typesStat[type.indexOf(rows[i][7])].Count--;
+      if(rows[i][1] === 'Uber')
+      {
+        uberlyftStat[neighbourhoods.indexOf(rows[i][4])].UberCount--;
+      }else if(rows[i][1] === 'Lyft')
+      {
+        uberlyftStat[neighbourhoods.indexOf(rows[i][4])].LyftCount--;
+      }
       rows.splice(i, 1);
       break;
     }
@@ -385,7 +387,42 @@ function updateRow(row) {
     };
     if(rows[i][8] === row.update.Id)
     {
+      if(object[row.field]==1)
+      {
+        
+        if(rows[i][object[row.field]] === 'Uber')
+        {
+          uberlyftStat[neighbourhoods.indexOf(rows[i][4])].UberCount--;
+        }else if(rows[i][object[row.field]] === 'Lyft')
+        {
+          uberlyftStat[neighbourhoods.indexOf(rows[i][4])].LyftCount--;
+        }
+      
+        if(row.value === 'Uber')
+        {
+          uberlyftStat[neighbourhoods.indexOf(rows[i][4])].UberCount++;
+        }else if(row.value === 'Lyft')
+        {
+          uberlyftStat[neighbourhoods.indexOf(rows[i][4])].LyftCount++;
+        }
+      }else if(object[row.field] == 2)
+      {
+        dateStat[dates.indexOf(Math.floor(rows[i][object[row.field]]/86400000))].Count--;
+        if(dates.includes(Math.floor(row.value/86400000)))
+        {
+          dateStat[dates.indexOf(Math.floor(row.value/86400000))].Count++;
+        }else{
+          dates.push(Math.floor(row.value/86400000));
+          var d = new Date(Math.floor(row.value/86400000)*86400000);
+          dateStat.push({Neighbourhood: d.toLocaleDateString('en-Us'), Count: 1});
+        }
+      }else if(object[row.field] == 7)
+      {
+        typesStat[type.indexOf(row.value)].Count++;
+        typesStat[type.indexOf(rows[i][7])].Count--;
+      }
       rows[i][object[row.field]] = row.value;
+      
       break;
     }
   }
@@ -406,6 +443,24 @@ function addRow(info) {
   newRow.push(id);
   id++;
   rows.push(newRow);
+  if(newRow[1] === 'Uber')
+  {
+    uberlyftStat[neighbourhoods.indexOf(newRow[4])].UberCount++;
+    uberlyftStat[neighbourhoods.indexOf(newRow[4])].Count++;
+  }else if(newRow[1] === 'Lyft')
+  {
+    uberlyftStat[neighbourhoods.indexOf(newRow[4])].LyftCount++;
+    uberlyftStat[neighbourhoods.indexOf(newRow[4])].Count++;
+  }
+  if(dates.includes(Math.floor(newRow[2]/86400000)))
+  {
+    dateStat[dates.indexOf(Math.floor(newRow[2]/86400000))].Count++;
+  }else{
+    dates.push(Math.floor(newRow[2]/86400000));
+    var d = new Date(Math.floor(newRow[2]/86400000)*86400000);
+    dateStat.push({Neighbourhood: d.toLocaleDateString('en-Us'), Count: 1});
+  }
+  typesStat[type.indexOf(newRow[7])].Count++;
 
   console.log("Inserted the following information: " + newRow);
   writeBlank();
@@ -418,11 +473,11 @@ function addRow(info) {
 function search(criteria) {
   var query = criteria;
   for (y in query) {
-    if(y == 'Distance' && isNaN(query[y]))  // Validation checks
+    if(y == 'Distance' && isNaN(query[y][0]))  // Validation checks
     {
       console.log("Error: The Distance has to be an integer.  Setting it to null as Default.");
     }
-    else if(y == 'Price' && isNaN(query[y]))
+    else if(y == 'Price' && isNaN(query[y][0]))
     {
       console.log("Error: The Price has to be an integer.  Setting it to null as Default.");
     }
@@ -436,7 +491,7 @@ function search(criteria) {
   var show = true;
   for(x in query)
   {
-    if(query[x] != null)
+    if((!Array.isArray(query[x]) && query[x] != null) || ((Array.isArray(query[x]) && query[x][0] != null)))
     {
       valid = true;
     }
@@ -451,11 +506,29 @@ function search(criteria) {
     var j = 0;
     for(x in query)
     {
-      if(x == 'Timestamp')
+      if(x === 'Timestamp')
       {
-        if(query[x] != null && !(rows[i][j] >= query[x] && rows[i][j] < (query[x]+86400000)))
+        if(query[x][0] != null)
         {
-          add = false;
+          if(query[x][1] != null && !(rows[i][j] >= query[x][0] && rows[i][j] < (query[x][1]+86400000)))
+          {
+            add = false;
+          }else if(query[x][1] == null && !(rows[i][j] >= query[x][0] && rows[i][j] < (query[x][0]+86400000)))
+          {
+            add = false;
+          }
+        }
+      }else if(x === 'Distance' || x === 'Price')
+      {
+        if(query[x][0] != null)
+        {
+          if(query[x][1] != null && !(rows[i][j] >= query[x][0] && rows[i][j] < query[x][1]))
+          {
+            add = false;
+          }else if(query[x][1] == null && !(rows[i][j] === query[x][0]))
+          {
+            add = false;
+          }
         }
       }
       else{
